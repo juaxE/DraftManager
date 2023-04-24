@@ -30,7 +30,7 @@ CREATE TABLE "user_players" (
   "created_at" timestamp
 );
 
-CREATE TABLE "draft_pick" (
+CREATE TABLE "draft_picks" (
   "id" integer PRIMARY KEY,
   "team_id" integer,
   "player_id" integer,
@@ -50,9 +50,9 @@ ALTER TABLE "user_players" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id")
 
 ALTER TABLE "user_players" ADD FOREIGN KEY ("player_id") REFERENCES "players" ("id");
 
-ALTER TABLE "draft_pick" ADD FOREIGN KEY ("team_id") REFERENCES "teams" ("id");
+ALTER TABLE "draft_picks" ADD FOREIGN KEY ("team_id") REFERENCES "teams" ("id");
 
-ALTER TABLE "draft_pick" ADD FOREIGN KEY ("player_id") REFERENCES "players" ("id");
+ALTER TABLE "draft_picks" ADD FOREIGN KEY ("player_id") REFERENCES "players" ("id");
 
 ALTER TABLE "players" ADD FOREIGN KEY ("created_by") REFERENCES "users" ("id");
 
