@@ -2,6 +2,9 @@
 <title>DraftManager - {% block title %}{% endblock %}</title>
 <h1>DraftManager</h1>
 <a href="/">Draft Manager</a>
+{% if session.admin %}
+<a href="/config">Draft settings</a>
+{% endif %}
 {% if session.username %}
 <a href="/logout">Log Out</a>
 {% endif %}

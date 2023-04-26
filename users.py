@@ -17,30 +17,42 @@ def check(username, password):
     else:
         hash_value = user.password
     if check_password_hash(hash_value, password):
+        checkAdmin(username)
         return True
     else:
         return False
     
-def login():
-    username = request.form["username"]
-    password = request.form["password"]
+def checkAdmin(username):
+    sql = text('SELECT admin FROM users WHERE username=:username')
+    result = db.session.execute(sql, {"username":username})
+    adminStatus = result.fetchone()
+    if adminStatus[0]==True:
+        session["admin"] = True
+    return
+    
+def login(username, password):
     if(check(username,password)==True):
         session["username"] = username
-        return redirect("/")
+        return True
     else:
-        return redirect("/")
+        return False
     
 def register():
     return render_template("register.html")
 
-def registerSend():
-    username = request.form["username"]
-    hash_value = generate_password_hash(request.form["password"])
-    sql = text("INSERT INTO users (username, password) VALUES (:username, :password)")
-    db.session.execute(sql, {"username":username, "password":hash_value})
-    db.session.commit()
-    return redirect("/")
+def registerSend(username, password):
+    hash_value = generate_password_hash(password)
+    try:
+        sql = text("INSERT INTO users (username, password) VALUES (:username, :password)")
+        db.session.execute(sql, {"username":username, "password":hash_value})
+        db.session.commit()
+    except:
+        return False
+    return True
 
-def logout():
+def logout():    
     del session["username"]
-    return redirect("/")
+    try:
+        del session["admin"]
+    except:
+        pass

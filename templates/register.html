@@ -7,10 +7,12 @@
 <a href="/logout">Log out</a>
 {% else %}
 <form action="/registerSend" method="POST">
-<p>Tunnus:<br>
+<p>Username:<br>
 <input type="text" name="username"></p>
-<p>Salasana:<br>
-<input type="password" name="password"></p>
+<p>Password:<br>
+<input type="password" name="password1"></p>
+<p>Confirm password:<br>
+<input type="password" name="password2"></p>
 <input type="submit" value="Register">
 </form>
 {% endif %}
