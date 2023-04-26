@@ -15,9 +15,9 @@ CREATE TABLE "users" (
 
 CREATE TABLE "players" (
   "id" SERIAL PRIMARY KEY,
-  "name" varchar(100),
-  "role" char(2),
   "iss" smallint,
+  "name" varchar(100),
+  "role" char(2),  
   "drafted" boolean,
   "created_at" timestamp,
   "created_by" integer REFERENCES users
