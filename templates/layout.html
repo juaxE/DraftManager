@@ -1,0 +1,10 @@
+<!doctype html>
+<title>DraftManager - {% block title %}{% endblock %}</title>
+<h1>DraftManager</h1>
+<a href="/">Draft Manager</a>
+{% if session.username %}
+<a href="/logout">Log Out</a>
+{% endif %}
+<hr>
+{% block content %}{% endblock %}
+<hr>

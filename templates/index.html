@@ -1,2 +1,22 @@
-<title>Draft Manager</title>
-<b>Welcome</b>
+{% extends "layout.html" %}
+{% block title %}Index{% endblock %}
+{% block content %}
+
+{% if session.username %}
+<h2>Welcome {{ session.username }}</h2>
+
+{% else %}
+
+<form action="/login" method="POST">
+    <p>Username:<br>
+    <input type="text" name="username"></p>
+    <p>Password:<br>
+    <input type="password" name="password"></p>
+    <input type="submit" value="Log in">
+</form>
+
+<p>Don't have an account yet? <a href="/register">Register here</a></p>
+
+{% endif %}
+
+{% endblock %}
