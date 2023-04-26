@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+{% block title %}Etusivu{% endblock %}
+{% block content %}
+
+{% if session.admin %}
+
+{% for user in userslisted %}
+<form action="/delete" method="POST" onsubmit="return confirm('Are you sure you want to delete {{ user[1] }}?')">
+<input type="hidden" name="id" value="{{ user[0] }}">
+<p>Username: {{ user[1] }} Team_id: {{ user[2] }}</p>
+<button type="submit">Delete the user</button>
+</form>
+{% endfor %}
+
+
+{% else %}
+
+{% endif %}
+
+{% endblock %}

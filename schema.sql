@@ -44,6 +44,6 @@ CREATE TABLE "draft_configuration" (
   "name" varchar(100),
   "participants" smallint,
   "rounds" smallint,
-  "isSnake" boolean,
+  "snake" boolean,
   "created_at" timestamp
 );

@@ -1,12 +1,7 @@
-from db import db
-from app import app
-from os import getenv
-from sqlalchemy import text
+from flask import session
 from werkzeug.security import check_password_hash, generate_password_hash
-from flask import redirect, render_template, request, session
-
-app.secret_key = getenv("SECRET_KEY")
-
+from sqlalchemy import text
+from db import db
 
 def check(username, password):
     sql = text("SELECT id, password FROM users WHERE username=:username")
@@ -36,9 +31,6 @@ def login(username, password):
         return True
     else:
         return False
-    
-def register():
-    return render_template("register.html")
 
 def registerSend(username, password):
     hash_value = generate_password_hash(password)
@@ -48,6 +40,7 @@ def registerSend(username, password):
         db.session.commit()
     except:
         return False
+    session["username"] = username
     return True
 
 def logout():    
@@ -56,3 +49,13 @@ def logout():
         del session["admin"]
     except:
         pass
+
+def listUsers():
+    sql = text("SELECT id, username, team_id FROM users WHERE admin IS NULL")
+    result = db.session.execute(sql)
+    return result.fetchall()
+
+def deleteUser(id):
+    sql = text("DELETE FROM users WHERE id=:id")
+    db.session.execute(sql, {"id":id})
+    db.session.commit()

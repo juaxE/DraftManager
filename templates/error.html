@@ -1,3 +1,9 @@
-Error: {{ message }}
+{% extends "layout.html" %}
+{% block title %}Etusivu{% endblock %}
+{% block content %}
 
+Error: {{ message }}
+</br>
 <a href="/">Return to front page</a>
+
+{% endblock %}
