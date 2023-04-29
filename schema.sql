@@ -1,6 +1,7 @@
 CREATE TABLE "teams" (
   "id" SERIAL PRIMARY KEY,
   "name" varchar(60) UNIQUE,
+  "position" smallint(50) UNIQUE,
   "created_at" timestamp
 );
 
@@ -15,7 +16,7 @@ CREATE TABLE "users" (
 
 CREATE TABLE "players" (
   "id" SERIAL PRIMARY KEY,
-  "iss" smallint,
+  "iss" smallint UNIQUE,
   "name" varchar(100),
   "role" char(2),  
   "drafted" boolean,
@@ -42,8 +43,9 @@ CREATE TABLE "draft_picks" (
 CREATE TABLE "draft_configuration" (
   "id" SERIAL PRIMARY KEY,
   "name" varchar(100),
-  "participants" smallint,
-  "rounds" smallint,
+  "participants" smallint(50),
+  "rounds" smallint(40),
   "snake" boolean,
+  "confirmed" boolean,
   "created_at" timestamp
 );

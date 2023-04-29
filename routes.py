@@ -3,6 +3,7 @@ from flask import render_template, request, redirect
 import users
 import players
 import draftConfig
+import teams
 
 
 @app.route("/")
@@ -42,8 +43,8 @@ def registerSend():
     
 @app.route("/usersList")
 def usersList():
-    list=users.listUsers()
-    return render_template("usersList.html", userslisted=list)
+    usersListed=users.listUsers()
+    return render_template("usersList.html", usersListed=usersListed)
 
 @app.route("/delete", methods=["POST"])
 def delete():    
@@ -53,9 +54,23 @@ def delete():
 
 @app.route("/config")
 def config():
-    configs=draftConfig.loadConfig()
-    list=configs[0]
-    return render_template("config.html", configuration=list)
+    configuration=draftConfig.loadConfig()
+    teamsList=teams.loadTeams()
+    return render_template("config.html", configuration=configuration, teamsList = teamsList)
+
+@app.route("/toggleConfirmConfig", methods=["POST"])
+def toggleConfirmConfig():
+    id = request.form["id"]
+    confirmed = request.form["confirmed"]
+    print(confirmed)
+    if draftConfig.toggleLockConfig(id, confirmed):
+        config=draftConfig.loadConfig()
+        teams.initTeams(config[2])
+        print("jee")
+        return redirect("config")
+    else:
+        teams.deleteTeams()
+        return redirect("config")
 
 @app.route("/updateConfig", methods=["POST"])
 def updateConfig():
@@ -68,4 +83,10 @@ def updateConfig():
         return redirect("config")
     else:
         render_template("error.html", message="Settings update failed")
-    
+        
+@app.route("/updateTeams", methods=["POST"])
+def updateTeams():
+    ids = request.form.getlist("id")
+    names = request.form.getlist("name")
+    teams.updateTeams(ids,names)
+    return redirect("config")

@@ -3,18 +3,30 @@ from sqlalchemy import text
 
 
 def loadConfig():
-    sql = text("SELECT id, name, participants, rounds, snake FROM draft_configuration")
+    sql = text("SELECT id, name, participants, rounds, snake, confirmed FROM draft_configuration")
     result = db.session.execute(sql)
-    config = result.fetchall()
+    config = result.fetchone()
     if not config:
         return newConfig()    
     return config
     
 def newConfig():
-    sql = text("INSERT INTO draft_configuration (name, participants, rounds, snake) VALUES (Default, 30, 7, False)")
+    sql = text("INSERT INTO draft_configuration (name, participants, rounds, snake, confirmed) VALUES (Default, 30, 7, False, False)")
     db.session.execute(sql)
     db.session.commit()
     return loadConfig()
+
+def toggleLockConfig(id, confirmed):    
+    if confirmed == "False":
+        confirmed="True"    
+    elif confirmed == "True":
+        confirmed = "False"        
+    sql = text("UPDATE draft_configuration SET confirmed=:confirmed WHERE id=:id")    
+    db.session.execute(sql, {"id":id, "confirmed":confirmed})
+    db.session.commit()
+    if confirmed == "False":
+        return False
+    return True
 
 def updateConfig(id, name, participants, rounds, snake):
     sql = text("UPDATE draft_configuration SET name=:name, participants=:participants, rounds=:rounds, snake=:snake WHERE id=:id")
@@ -24,3 +36,8 @@ def updateConfig(id, name, participants, rounds, snake):
     except:
         return False
     return True
+
+def deleteConfig(id):
+    sql = text("DELETE FROM draft_configuration WHERE id=:id")
+    db.session.execute(sql, {"id":id})
+    db.session.commit()

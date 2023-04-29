@@ -4,7 +4,7 @@
 
 {% if session.admin %}
 
-{% for user in userslisted %}
+{% for user in usersListed %}
 <form action="/delete" method="POST" onsubmit="return confirm('Are you sure you want to delete {{ user[1] }}?')">
 <input type="hidden" name="id" value="{{ user[0] }}">
 <p>Username: {{ user[1] }} Team_id: {{ user[2] }}</p>
