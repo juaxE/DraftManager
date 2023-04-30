@@ -1,9 +1,6 @@
 from app import app
 from flask import render_template, request, redirect
-import users
-import players
-import draftConfig
-import teams
+import users, players, draftConfig, teams, draft
 
 
 @app.route("/")
@@ -62,11 +59,11 @@ def config():
 def toggleConfirmConfig():
     id = request.form["id"]
     confirmed = request.form["confirmed"]
-    print(confirmed)
     if draftConfig.toggleLockConfig(id, confirmed):
         config=draftConfig.loadConfig()
         teams.initTeams(config[2])
-        print("jee")
+        teamsInfo =  teams.loadTeams()
+        draft.initPicks(config, teamsInfo)
         return redirect("config")
     else:
         teams.deleteTeams()
@@ -88,5 +85,18 @@ def updateConfig():
 def updateTeams():
     ids = request.form.getlist("id")
     names = request.form.getlist("name")
-    teams.updateTeams(ids,names)
-    return redirect("config")
+    if teams.updateTeams(ids,names):
+        return redirect("config")
+    else:
+        return render_template("error.html", message="Teamnames must be unique")
+    
+@app.route("/addPlayer", methods=["POST"])
+def addPlayer():
+    iss = request.form["iss"]
+    name = request.form["name"]
+    role = request.form["role"]
+    
+    if players.addPlayer(iss, name, role):
+        return redirect("config")
+    else:
+        return render_template("error.html", message="ISS number must be unique")

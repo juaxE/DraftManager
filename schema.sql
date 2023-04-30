@@ -19,24 +19,23 @@ CREATE TABLE "players" (
   "iss" smallint UNIQUE,
   "name" varchar(100),
   "role" char(2),  
-  "drafted" boolean,
+  "drafted" boolean DEFAULT FALSE,
   "created_at" timestamp,
-  "created_by" integer REFERENCES users
 );
 
 CREATE TABLE "user_players" (
   "id" SERIAL PRIMARY KEY,
-  "user_id" integer REFERENCES users,
-  "player_id" integer REFERENCES players,
+  "user_id" integer REFERENCES users ON DELETE CASCADE,
+  "player_id" integer REFERENCES players ON DELETE CASCADE,
   "list_order" smallint,  
   "created_at" timestamp
 );
 
 CREATE TABLE "draft_picks" (
   "id" SERIAL PRIMARY KEY,
-  "order" smallint,
-  "team_id" integer REFERENCES teams,
-  "player_id" integer REFERENCES players,
+  "pickorder" smallint UNIQUE,
+  "team_id" integer REFERENCES teams ON DELETE CASCADE,
+  "player_id" integer REFERENCES players ON DELETE CASCADE,
   "created_at" timestamp
 );
 

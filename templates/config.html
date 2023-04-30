@@ -3,7 +3,9 @@
 {% block content %}
 
 {% if session.admin %}
+
 {% if configuration[5] == 0 %}
+
 <form  action="/updateConfig" method="POST" >
     <input type="hidden" name="id" value="{{ configuration[0] }}">
     <label>Name</label>
@@ -25,12 +27,18 @@
     <input type="hidden" name="confirmed" value="{{ configuration[5] }}">
     <button type="submit" >CONFIRM DRAFT SETTINGS</button>
 </form>
+
+
 {% else %}
+
 <form action="/toggleConfirmConfig" method="POST" onsubmit="return confirm('Are you sure you want to return to config? This resets teams.')">
     <input type="hidden" name="id" value="{{ configuration[0] }}">
     <input type="hidden" name="confirmed" value="{{ configuration[5] }}">
     <button type="submit" >Return to configuration</button>
 </form>
+
+<div>
+<h3>Set teamnames</h3>
 
 <form  action="/updateTeams" method="POST" >
     
@@ -41,10 +49,29 @@
         <input name="name" type="text" value="{{ team[1] }}">
     <label>Position</label>
         {{ team[2] }}
-</div>
-    
+</div>    
 {% endfor %}
+
 <button type="submit">Update teams</button>
+</form>
+</div>
+
+<h3>Add Player</h3>
+<form action="/addPlayer" method="POST">
+    <label>ISS</label>
+        <input name="iss" type="number" min ="1">
+    <label>Name</label>
+        <input name="name" type="text" maxlength="100">
+    <label>Role</label>
+        <select name="role">
+            <option value="G">G</option>
+            <option value="LD">LD</option>
+            <option value="RD">RD</option>
+            <option value="LW">LW</option>
+            <option value="C">C</option>
+            <option value="RW">RW</option>
+        </select>
+    <button type="submit">Add player</button>
 </form>
 
 {% endif %}
