@@ -4,6 +4,26 @@
 {% block content %}
 
 <h2>Welcome {{ session.username }}</h2>
+{% if userTeam%}
+
+{% else %}
+<h3>Please select your team</h3>
+<form action="/selectTeam" method="POST">
+<input type="hidden" name="username" value="{{ session.username }}">
+<select name="teamId">
+{% for team in teamList %}
+<option value="{{team[0]}}">{{team[1]}}</option>
+{% endfor %}
+</select>
+<button type="submit">Submit</button>
+</form>
+
+
+
+
+{% endif %}
+
+
 
 {% endblock %}
 

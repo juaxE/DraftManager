@@ -36,3 +36,22 @@ def updateTeams(ids, names):
         return False
     else:
         return True
+    
+def loadFreeTeams():
+    sql = text("SELECT teams.id, teams.name FROM teams LEFT JOIN users ON teams.id = users.team_id WHERE users.team_id IS NULL")
+    result = db.session.execute(sql)
+    return result.fetchall()
+
+def checkTeam(username):
+    sql = text("SELECT teams.name FROM teams LEFT JOIN users ON teams.id = users.team_id WHERE users.username=:username")
+    result = db.session.execute(sql, {"username":username})
+    return result.fetchone()
+
+def selectTeam(team_id, username):
+    try:
+        sql = text("UPDATE users SET team_id=:team_id WHERE username=:username")
+        db.session.execute(sql, {"team_id":team_id, "username":username})
+        db.session.commit()
+        return True
+    except:
+        return False

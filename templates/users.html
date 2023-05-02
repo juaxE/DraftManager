@@ -7,11 +7,15 @@
 {% for user in usersListed %}
 <form action="/deleteUser" method="POST" onsubmit="return confirm('Are you sure you want to delete {{ user[1] }}?')">
 <input type="hidden" name="id" value="{{ user[0] }}">
+
 {% if user[2] == NULL %}
 <p>Username: {{ user[1] }} Controls team: none</p>
+
 {% else %}
 <p>Username: {{ user[1] }} Controls team: {{ user[2] }}</p>
+
 {% endif %}
+
 <button type="submit">Delete the user</button>
 </form>
 {% endfor %}

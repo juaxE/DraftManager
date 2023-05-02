@@ -1,15 +1,19 @@
 {% if session.username %}
+
 <p>You are already signed in as {{ session.username }}</p>
 <a href="/logout">Log out</a>
+
 {% else %}
+
 <h1>DraftManager</h1>
 <form action="/registerSend" method="POST">
-<p>Username:<br>
-<input type="text" name="username"></p>
-<p>Password:<br>
-<input type="password" name="password1"></p>
-<p>Confirm password:<br>
-<input type="password" name="password2"></p>
+    <p>Username:<br>
+        <input type="text" name="username"></p>
+    <p>Password:<br>
+        <input type="password" name="password1"></p>
+    <p>Confirm password:<br>
+        <input type="password" name="password2"></p>
 <input type="submit" value="Register">
 </form>
+
 {% endif %}

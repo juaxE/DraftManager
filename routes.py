@@ -1,11 +1,15 @@
 from app import app
-from flask import render_template, request, redirect
+from flask import render_template, request, redirect, session
 import users, players, draftConfig, teams, draft
-
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    if "username" in session:
+        teamList = teams.loadFreeTeams()
+        userTeam = teams.checkTeam(session["username"])
+        return render_template("index.html", teamList=teamList, userTeam=userTeam)
+    else:
+        return render_template("index.html")
 
 @app.route("/login", methods=["POST"])
 def login():
@@ -37,11 +41,11 @@ def registerSend():
     else:
         return render_template("error.html", message="Registering failed. Try another username")
     
+
     
 @app.route("/users")
 def usersList():
     usersListed=users.listUsers()
-    print(usersListed)
     return render_template("users.html", usersListed=usersListed)
 
 @app.route("/deleteUser", methods=["POST"])
@@ -49,6 +53,8 @@ def delete():
     id = request.form["id"]
     users.deleteUser(id)
     return redirect("/users")
+
+
 
 @app.route("/config")
 def config():
@@ -81,6 +87,8 @@ def updateConfig():
         return redirect("config")
     else:
         render_template("error.html", message="Settings update failed")
+
+
         
 @app.route("/updateTeams", methods=["POST"])
 def updateTeams():
@@ -90,7 +98,20 @@ def updateTeams():
         return redirect("config")
     else:
         return render_template("error.html", message="Teamnames must be unique")
+
+@app.route("/selectTeam", methods=["POST"])    
+def selectTeam():
+    teamId = request.form["teamId"]
+    username = request.form["username"]
+    if teams.selectTeam(teamId, username):
+        return redirect("/")
+    else:
+        return render_template("error.html", message="Team is already taken.")
     
+
+
+
+
 
 @app.route("/players")
 def playersGet():
