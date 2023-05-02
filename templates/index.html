@@ -1,12 +1,14 @@
+{% if session.username %}
 {% extends "layout.html" %}
-{% block title %}Index{% endblock %}
+{% block title %}Etusivu{% endblock %}
 {% block content %}
 
-{% if session.username %}
 <h2>Welcome {{ session.username }}</h2>
 
-{% else %}
+{% endblock %}
 
+{% else %}
+<h1>DraftManager</h1>
 <form action="/login" method="POST">
     <p>Username:<br>
     <input type="text" name="username"></p>
@@ -18,5 +20,3 @@
 <p>Don't have an account yet? <a href="/register">Register here</a></p>
 
 {% endif %}
-
-{% endblock %}

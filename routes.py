@@ -38,16 +38,17 @@ def registerSend():
         return render_template("error.html", message="Registering failed. Try another username")
     
     
-@app.route("/usersList")
+@app.route("/users")
 def usersList():
     usersListed=users.listUsers()
-    return render_template("usersList.html", usersListed=usersListed)
+    print(usersListed)
+    return render_template("users.html", usersListed=usersListed)
 
-@app.route("/delete", methods=["POST"])
+@app.route("/deleteUser", methods=["POST"])
 def delete():    
     id = request.form["id"]
     users.deleteUser(id)
-    return redirect("/usersList")
+    return redirect("/users")
 
 @app.route("/config")
 def config():
@@ -90,6 +91,12 @@ def updateTeams():
     else:
         return render_template("error.html", message="Teamnames must be unique")
     
+
+@app.route("/players")
+def playersGet():
+    playerList=players.loadPlayers()
+    return render_template("players.html", playerList=playerList)
+    
 @app.route("/addPlayer", methods=["POST"])
 def addPlayer():
     iss = request.form["iss"]
@@ -97,6 +104,6 @@ def addPlayer():
     role = request.form["role"]
     
     if players.addPlayer(iss, name, role):
-        return redirect("config")
+        return redirect("players")
     else:
         return render_template("error.html", message="ISS number must be unique")

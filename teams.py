@@ -28,6 +28,7 @@ def updateTeams(ids, names):
             sql = text("UPDATE teams SET name=:name WHERE id=:id")
             db.session.execute(sql, {"name":name, "id":id})
             db.session.commit()
+            
             sql = text("UPDATE users SET team_id=NULL WHERE team_id=:id")
             db.session.execute(sql, {"id":id})
             db.session.commit()            

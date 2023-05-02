@@ -51,7 +51,7 @@ def logout():
         pass
 
 def listUsers():
-    sql = text("SELECT id, username, team_id FROM users WHERE admin IS NULL")
+    sql = text("SELECT users.id, users.username, teams.name FROM users LEFT JOIN teams ON users.team_id = teams.id WHERE admin IS NULL")
     result = db.session.execute(sql)
     return result.fetchall()
 

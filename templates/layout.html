@@ -3,12 +3,13 @@
 <h1>DraftManager</h1>
 <a href="/">Draft Manager</a>
 {% if session.admin %}
-<a href="/usersList">Manage users</a>
+<a href="/users">Manage users</a>
 <a href="/config">Draft settings</a>
 {% endif %}
 {% if session.username %}
+<a href="/players">Players</a>
 <a href="/logout">Log Out</a>
-{% endif %}
 <hr>
 {% block content %}{% endblock %}
 <hr>
+{% endif %}
