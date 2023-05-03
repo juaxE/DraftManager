@@ -7,7 +7,8 @@ def index():
     if "username" in session:
         teamList = teams.loadFreeTeams()
         userTeam = teams.checkTeam(session["username"])
-        return render_template("index.html", teamList=teamList, userTeam=userTeam)
+        nextPick = draft.nextPick()
+        return render_template("index.html", teamList=teamList, userTeam=userTeam, nextPick=nextPick)
     else:
         return render_template("index.html")
 
@@ -116,6 +117,7 @@ def selectTeam():
 @app.route("/players")
 def playersGet():
     playerList=players.loadPlayers()
+    playerList.reverse()
     return render_template("players.html", playerList=playerList)
     
 @app.route("/addPlayer", methods=["POST"])

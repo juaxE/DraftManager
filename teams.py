@@ -1,6 +1,6 @@
-from flask import session
 from sqlalchemy import text
 from db import db
+import users
 
 def initTeams(amount):
     for i in range(amount):
@@ -15,23 +15,21 @@ def loadTeams():
     return result.fetchall()
 
 def deleteTeams():
+    users.resetTeamIds() 
     sql = text("DELETE FROM teams")
     db.session.execute(sql)
     db.session.commit()
+              
     
-def updateTeams(ids, names):
-    
+def updateTeams(ids, names):    
     try:
         for i in range(len(ids)):
             id=ids[i]
-            name=names[i]        
+            name=names[i]
+        
             sql = text("UPDATE teams SET name=:name WHERE id=:id")
             db.session.execute(sql, {"name":name, "id":id})
             db.session.commit()
-            
-            sql = text("UPDATE users SET team_id=NULL WHERE team_id=:id")
-            db.session.execute(sql, {"id":id})
-            db.session.commit()            
     except:
         return False
     else:
@@ -43,7 +41,7 @@ def loadFreeTeams():
     return result.fetchall()
 
 def checkTeam(username):
-    sql = text("SELECT teams.name FROM teams LEFT JOIN users ON teams.id = users.team_id WHERE users.username=:username")
+    sql = text("SELECT teams.id, teams.name FROM teams LEFT JOIN users ON teams.id = users.team_id WHERE users.username=:username")
     result = db.session.execute(sql, {"username":username})
     return result.fetchone()
 

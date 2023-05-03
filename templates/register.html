@@ -1,3 +1,7 @@
+<!doctype html>
+<title>DraftManager - Register</title>
+<h1>DraftManager</h1>
+
 {% if session.username %}
 
 <p>You are already signed in as {{ session.username }}</p>
@@ -5,7 +9,6 @@
 
 {% else %}
 
-<h1>DraftManager</h1>
 <form action="/registerSend" method="POST">
     <p>Username:<br>
         <input type="text" name="username"></p>
@@ -15,5 +18,6 @@
         <input type="password" name="password2"></p>
 <input type="submit" value="Register">
 </form>
-
+<br>
+Already have an account?<a href="/">Go to log in</a>
 {% endif %}

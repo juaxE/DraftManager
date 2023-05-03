@@ -23,14 +23,25 @@ def checkAdmin(username):
     adminStatus = result.fetchone()
     if adminStatus[0]==True:
         session["admin"] = True
+    else:
+        session["admin"] = False
     return
     
 def login(username, password):
     if(check(username,password)==True):
         session["username"] = username
+        setId(username)
+        
         return True
     else:
         return False
+    
+def setId(username):
+    sql = text("SELECT users.id FROM users WHERE users.username=:username")
+    result = db.session.execute(sql, {"username":username})
+    session["userId"] = result.scalar()
+    return 
+    
 
 def registerSend(username, password):
     hash_value = generate_password_hash(password)
@@ -41,11 +52,13 @@ def registerSend(username, password):
     except:
         return False
     session["username"] = username
+    setId(username)
     return True
 
 def logout():    
-    del session["username"]
     try:
+        del session["username"]
+        del session["userId"]
         del session["admin"]
     except:
         pass
@@ -58,4 +71,9 @@ def listUsers():
 def deleteUser(id):
     sql = text("DELETE FROM users WHERE id=:id")
     db.session.execute(sql, {"id":id})
+    db.session.commit()
+    
+def resetTeamIds():
+    sql = text("UPDATE users SET team_id=NULL")
+    db.session.execute(sql)
     db.session.commit()

@@ -15,3 +15,8 @@ def initPicks(config, teamsInfo):
         sql = text("INSERT INTO draft_picks (pickorder, team_id, created_at) VALUES (:pickorder, :team_id, NOW())")
         db.session.execute(sql, {"pickorder":pickorder, "team_id":team_id})
         db.session.commit()
+        
+def nextPick():
+    sql = text("SELECT pickorder, team_id FROM draft_picks WHERE player_id IS NULL ORDER BY pickorder ASC")
+    result = db.session.execute(sql)
+    return result.fetchone()

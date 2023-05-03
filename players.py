@@ -23,7 +23,7 @@ def deletePlayer(id):
     
 def updatePlayer(id, iss, name, role):    
     try:
-        sql = text("UPDATE players SET iss=:iss, name=:name, role=:role WHERE id=:id)")
+        sql = text("UPDATE players SET iss=:iss, name=:name, role=:role WHERE id=:id")
         db.session.execute(sql, {"id":id, "iss":iss, "name":name, "role":role})
         db.session.commit()
     except:

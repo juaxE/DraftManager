@@ -7,7 +7,7 @@
 <h3>Add Player</h3>
 <form action="/addPlayer" method="POST">
     <label>ISS</label>
-        <input name="iss" type="number" min ="1">
+        <input name="iss" type="number" min ="1" {% if playerList %} value="{{playerList[0][1]+1}}" {% endif %}>
     <label>Name</label>
         <input name="name" type="text" maxlength="100">
     <label>Role</label>
@@ -23,9 +23,18 @@
 </form>
 
 {% endif %}
-
+<table>
+    <tr>
+        <th>ISS</th>
+        <th>Name</th>
+        <th>Role</th>
+    </tr>
 {% for player in playerList %}
-<p>ISS: {{ player[1] }} Name: {{ player[2] }} Role: {{ player[3] }} </p>
+<tr>
+    <td>{{ player[1] }}</td>
+    <td>{{ player[2] }}</td>
+    <td>{{ player[3] }}</td>
+</tr>
 {% endfor %}
-
+</table>
 {% endblock %}
