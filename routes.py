@@ -1,6 +1,6 @@
 from app import app
 from flask import render_template, request, redirect, session
-import users, players, draftConfig, teams, draft
+import users, players, draftConfig, teams, draft, list
 
 @app.route("/")
 def index():
@@ -130,3 +130,24 @@ def addPlayer():
         return redirect("players")
     else:
         return render_template("error.html", message="ISS number must be unique")
+    
+    
+@app.route("/list/<int:user_id>")
+def draftList(user_id):
+    if user_id != session["userId"]:
+        return render_template("error.html", message="Unauthorized")
+    else:
+        currentList=list.loadList(user_id)
+        playersList=players.loadPlayers()
+        return render_template("list.html", currentList=currentList, playersList=playersList)
+    
+@app.route("/addItem", methods=["POST"])
+def addItemToList():
+    userId = session["userId"]
+    playerId = request.form["playerId"]
+    listOrder = request.form["order"]
+    
+    if (list.addItem(userId, playerId, listOrder)):
+        return redirect(request.referrer)
+    else:
+        return render_template("error.html", message="Index already occupied.")

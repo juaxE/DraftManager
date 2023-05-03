@@ -28,7 +28,8 @@ CREATE TABLE "user_players" (
   "user_id" integer REFERENCES users ON DELETE CASCADE,
   "player_id" integer REFERENCES players ON DELETE CASCADE,
   "list_order" integer,  
-  "created_at" timestamp
+  "created_at" timestamp,
+  UNIQUE ("user_id", "list_order")
 );
 
 CREATE TABLE "draft_picks" (

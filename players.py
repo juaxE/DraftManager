@@ -12,7 +12,7 @@ def addPlayer(iss, name, role):
     return True
 
 def loadPlayers():
-    sql = text("SELECT id, iss, name, role FROM players ORDER BY iss ASC")
+    sql = text("SELECT id, iss, name, role, drafted FROM players ORDER BY iss ASC")
     result = db.session.execute(sql)
     return result.fetchall()
 
