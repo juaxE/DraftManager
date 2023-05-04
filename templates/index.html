@@ -11,10 +11,10 @@
 
 <h2>Welcome {{ session.username }}</h2>
 
-{% if userTeam%}
+{% if user_team%}
 <body>
-<p>Logged in as {{userTeam[1]}} <a href="/list/{{ session.userId }}">My list</a></p> 
-<p>Next pick is {{nextPick[0]}} by {{nextPick[1]}} <a href="/">View draft</a></p>
+<p>Logged in as {{user_team[1]}} <a href="/list/{{ session.userId }}">My list</a></p> 
+<p>Next pick is {{next_pick[0]}} by {{next_pick[1]}} <a href="/">View draft</a></p>
 
 </body>
 {% else %}
@@ -24,7 +24,7 @@
     <input type="hidden" name="username" value="{{ session.username }}">
         <select name="teamId">
 
-{% for team in teamList %}
+{% for team in team_list %}
             <option value="{{team[0]}}">{{team[1]}}</option>
 {% endfor %}
 

@@ -1,7 +1,7 @@
 from sqlalchemy import text
 from db import db
 
-def initPicks(config, teamsInfo):
+def init_picks(config, teamsInfo):
     participants = config[2]
     rounds = config[3]
     teamIds = [item[0] for item in teamsInfo]
@@ -16,7 +16,7 @@ def initPicks(config, teamsInfo):
         db.session.execute(sql, {"pickorder":pickorder, "team_id":team_id})
         db.session.commit()
         
-def nextPick():
+def next_pick():
     sql = text("SELECT pickorder, team_id FROM draft_picks WHERE player_id IS NULL ORDER BY pickorder ASC")
     result = db.session.execute(sql)
     return result.fetchone()

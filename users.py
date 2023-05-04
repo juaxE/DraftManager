@@ -12,16 +12,16 @@ def check(username, password):
     else:
         hash_value = user.password
     if check_password_hash(hash_value, password):
-        checkAdmin(username)
+        check_admin(username)
         return True
     else:
         return False
     
-def checkAdmin(username):
+def check_admin(username):
     sql = text('SELECT admin FROM users WHERE username=:username')
     result = db.session.execute(sql, {"username":username})
-    adminStatus = result.fetchone()
-    if adminStatus[0]==True:
+    admin_status = result.fetchone()
+    if admin_status[0]==True:
         session["admin"] = True
     else:
         session["admin"] = False
@@ -30,20 +30,20 @@ def checkAdmin(username):
 def login(username, password):
     if(check(username,password)==True):
         session["username"] = username
-        setId(username)
+        set_id(username)
         
         return True
     else:
         return False
     
-def setId(username):
+def set_id(username):
     sql = text("SELECT users.id FROM users WHERE users.username=:username")
     result = db.session.execute(sql, {"username":username})
-    session["userId"] = result.scalar()
+    session["user_id"] = result.scalar()
     return 
     
 
-def registerSend(username, password):
+def register_send(username, password):
     hash_value = generate_password_hash(password)
     try:
         sql = text("INSERT INTO users (username, password, created_at) VALUES (:username, :password, NOW())")
@@ -52,28 +52,28 @@ def registerSend(username, password):
     except:
         return False
     session["username"] = username
-    setId(username)
+    set_id(username)
     return True
 
 def logout():    
     try:
         del session["username"]
-        del session["userId"]
+        del session["user_id"]
         del session["admin"]
     except:
         pass
 
-def listUsers():
+def list_users():
     sql = text("SELECT users.id, users.username, teams.name FROM users LEFT JOIN teams ON users.team_id = teams.id WHERE admin IS NULL")
     result = db.session.execute(sql)
     return result.fetchall()
 
-def deleteUser(id):
+def delete_user(id):
     sql = text("DELETE FROM users WHERE id=:id")
     db.session.execute(sql, {"id":id})
     db.session.commit()
     
-def resetTeamIds():
+def reset_team_ids():
     sql = text("UPDATE users SET team_id=NULL")
     db.session.execute(sql)
     db.session.commit()

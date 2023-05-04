@@ -2,21 +2,21 @@ from db import db
 from sqlalchemy import text
 
 
-def loadConfig():
+def load_config():
     sql = text("SELECT id, name, participants, rounds, snake, confirmed FROM draft_configuration")
     result = db.session.execute(sql)
     config = result.fetchone()
     if not config:
-        return newConfig()    
+        return new_config()    
     return config
     
-def newConfig():
+def new_config():
     sql = text("INSERT INTO draft_configuration (name, participants, rounds, snake, confirmed) VALUES (Default, 30, 7, False, False)")
     db.session.execute(sql)
     db.session.commit()
-    return loadConfig()
+    return load_config()
 
-def toggleLockConfig(id, confirmed):    
+def toggle_lock_config(id, confirmed):    
     if confirmed == "False":
         confirmed="True"    
     elif confirmed == "True":
@@ -28,7 +28,7 @@ def toggleLockConfig(id, confirmed):
         return False
     return True
 
-def updateConfig(id, name, participants, rounds, snake):
+def update_config(id, name, participants, rounds, snake):
     sql = text("UPDATE draft_configuration SET name=:name, participants=:participants, rounds=:rounds, snake=:snake WHERE id=:id")
     try:
         db.session.execute(sql, {"id":id, "name":name, "participants":participants, "rounds":rounds, "snake":snake})
@@ -37,7 +37,7 @@ def updateConfig(id, name, participants, rounds, snake):
         return False
     return True
 
-def deleteConfig(id):
+def delete_config(id):
     sql = text("DELETE FROM draft_configuration WHERE id=:id")
     db.session.execute(sql, {"id":id})
     db.session.commit()

@@ -4,14 +4,14 @@
 <h2>My list</h2>
 <div>
 
-{% for item in currentList %}
+{% for item in current_list %}
 <div>
 <form action="/editItem" method="POST">
-    <input type="hidden" name="itemId" value="{{ item[0] }}">
+    <input type="hidden" name="item_id" value="{{ item[0] }}">
     <input type="hidden" name="order" value="{{ item[1] }}">
-    <select class="form-select" name="playerId">
+    <select class="form-select" name="player_id">
         <option value="{{ item[2] }}" selected {% if item[6] %} disabled {% endif %}>{{ item[3] }}. {{ item[4] }}, {{ item[5] }}</option>
-        {% for player in playersList %}
+        {% for player in players_list %}
 
             {% if not player[4] and item[2]!=player[0] %}
             <option value="{{ player[0] }}">{{ player[1] }}. {{ player[2] }}, {{ player[3] }}</option>
@@ -25,12 +25,12 @@
 </div>
 {% endfor %}
 
-{% if currentList|length < maxLength %}
+{% if current_list|length < max_items %}
 <div>
 <form action="/addItem" method="POST">
-    <input type="hidden" name="order" value="{{ currentList|length +1 }}">
-    <select class="form-select" name="playerId">
-        {% for player in playersList %}
+    <input type="hidden" name="order" value="{{ current_list|length +1 }}">
+    <select class="form-select" name="player_id">
+        {% for player in players_list %}
 
             {% if not player[4] %}
 

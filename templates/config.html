@@ -42,7 +42,7 @@
 
 <form  action="/updateTeams" method="POST" onsubmit="return confirm('Are you sure you want to update teamnames?')">
     
-{% for team in teamsList %}
+{% for team in teams_list %}
 <div>
 <input type="hidden" name="id" value="{{ team[0] }}">
     <label>Name</label>
