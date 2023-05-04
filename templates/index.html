@@ -1,3 +1,8 @@
+<!doctype html>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+<link rel="stylesheet" type="text/css" href="/static/custom.css">
+
 {% if session.username %}
 {% extends "layout.html" %}
 {% block title %}Welcome{% endblock %}
@@ -7,14 +12,14 @@
 <h2>Welcome {{ session.username }}</h2>
 
 {% if userTeam%}
-
+<body>
 <p>Logged in as {{userTeam[1]}} <a href="/list/{{ session.userId }}">My list</a></p> 
 <p>Next pick is {{nextPick[0]}} by {{nextPick[1]}} <a href="/">View draft</a></p>
 
-
+</body>
 {% else %}
 <h3>Please select your team</h3>
-
+<body>
 <form action="/selectTeam" method="POST">
     <input type="hidden" name="username" value="{{ session.username }}">
         <select name="teamId">
@@ -26,7 +31,7 @@
         </select>
     <button type="submit">Submit</button>
 </form>
-
+</body>
 {% endif %}
 
 {% endblock %}
@@ -35,7 +40,7 @@
 
 <title>DraftManager - LogIn</title>
 <h1>DraftManager</h1>
-
+<body>
 <form action="/login" method="POST">
     <p>Username:<br>
     <input type="text" name="username"></p>
@@ -43,7 +48,7 @@
     <input type="password" name="password"></p>
     <input type="submit" value="Log in">
 </form>
-
+</body>
 <p>Don't have an account yet? <a href="/register">Register here</a></p>
 
 {% endif %}
