@@ -13,7 +13,8 @@
 
 {% if user_team%}
 <body>
-<p>Logged in as {{user_team[1]}} <a href="/list/{{ session.userId }}">My list</a></p> 
+    {{uid}}
+<p>Logged in as {{user_team[1]}} <a href="/list">My list</a></p> 
 <p>Next pick is {{next_pick[0]}} by {{next_pick[1]}} <a href="/">View draft</a></p>
 
 </body>

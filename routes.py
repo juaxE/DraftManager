@@ -8,7 +8,7 @@ def index():
         team_list = teams.load_free_teams()
         user_team = teams.check_team(session["username"])
         next_pick = draft.next_pick()
-        return render_template("index.html", team_list=team_list, user_team=user_team, next_pick=next_pick)
+        return render_template("index.html", team_list=team_list, user_team=user_team, next_pick=next_pick, uid=session["user_id"])
     else:
         return render_template("index.html")
 
@@ -132,11 +132,9 @@ def add_player():
         return render_template("error.html", message="ISS number must be unique")
     
     
-@app.route("/list/<int:user_id>")
-def draftList(user_id):
-    if user_id != session["user_id"]:
-        return render_template("error.html", message="Unauthorized")
-    else:
+@app.route("/list")
+def draftList():
+        user_id=session["user_id"]
         max_items = 10
         current_list=user_players.load_list(user_id)
         players_list=players.load_available_players(user_id)

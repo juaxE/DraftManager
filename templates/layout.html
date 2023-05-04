@@ -6,14 +6,38 @@
 
 <title>DraftManager - {% block title %}{% endblock %}</title>
 <h1>DraftManager</h1>
-<a href="/">Draft Manager</a>
-{% if session.admin %}
-<a href="/users">Manage users</a>
-<a href="/config">Draft settings</a>
-{% endif %}
-{% if session.username %}
-<a href="/players">Players</a>
-<a href="/logout">Log Out</a>
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+            <a class="navbar-brand" href="/">Draft Manager</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav">
+                {% if session.username %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/list">My list</a>
+                    <li class="nav-item"></li>
+                        <a class="nav-link" href="/draft">Draft</a>
+                    {% if session.admin %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Admin options
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/players">Players</a></li>
+                            <li><a class="dropdown-item" href="/users">Manage users</a></li>
+                            <li><a class="dropdown-item" href="/config">Draft settings</a></li>
+                        </ul>
+                    </li>
+                    {% endif %}
+                    <li class="nav-item"></li>
+                        <a class="nav-link" href="/profile">Profile</a>
+                    <li class="nav-item"></li>
+                        <a class="nav-link" href="/logout">Log Out</a>
+                </ul>
+    </div>
+</nav>
 <hr>
 {% block content %}{% endblock %}
 <hr>

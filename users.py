@@ -39,9 +39,7 @@ def login(username, password):
 def set_id(username):
     sql = text("SELECT users.id FROM users WHERE users.username=:username")
     result = db.session.execute(sql, {"username":username})
-    session["user_id"] = result.scalar()
-    return 
-    
+    session["user_id"] = result.scalar()    
 
 def register_send(username, password):
     hash_value = generate_password_hash(password)

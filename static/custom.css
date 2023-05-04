@@ -1,19 +1,28 @@
 body {
     margin: 1%;
-    
-
 }
 
 table {
     width: 50%;
-}
-div {
-    margin-top: 1%;
-    margin-bottom: 1%;
 }
 
 td, th {
     border-style: solid;
     border-color: black;
     border-width: 1px;
+}
+
+.menu-left {
+    position:fixed;
+    left:0;
+}
+
+.menu-right {
+    position:fixed;
+    right:0;
+    
+}
+
+.menu-container {
+    overflow:hidden;
 }
