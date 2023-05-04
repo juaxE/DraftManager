@@ -13,7 +13,6 @@
 
 {% if user_team%}
 <body>
-    {{uid}}
 <p>Logged in as {{user_team[1]}} <a href="/list">My list</a></p> 
 <p>Next pick is {{next_pick[0]}} by {{next_pick[1]}} <a href="/">View draft</a></p>
 
@@ -23,7 +22,7 @@
 <body>
 <form action="/selectTeam" method="POST">
     <input type="hidden" name="username" value="{{ session.username }}">
-        <select name="teamId">
+        <select name="team_id">
 
 {% for team in team_list %}
             <option value="{{team[0]}}">{{team[1]}}</option>

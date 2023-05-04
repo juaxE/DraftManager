@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+{% block title %}Your profile{% endblock %}
+{% block content %}
+
+<div class="flex-container text-center">
+    <div class="row">
+        <div class="col align-self-start">
+            <form action="/unselectTeam" method="POST">
+                <input type="hidden" name="username" value="{{ session.username }}">
+                <p>Team: {{ user_team[1] }}</p>
+                <button class="btn btn-warning" type="submit">Change team</button>
+            </form>
+        </div>
+        <div class="col align-self-end">
+            <form action="/deleteOwnUser" method="POST" onsubmit="return confirm('{{ session.username }}, \ Are you sure you want to delete your account? THIS ACTION CAN NOT BE REVERSED')">
+                <p>You are logged in as {{ session.username }}</p>
+                <button class="btn btn-danger" type="submit">Delete profile</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

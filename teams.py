@@ -51,3 +51,8 @@ def select_team(team_id, username):
         return True
     except:
         return False
+    
+def un_select_team(user_id):
+    sql = text("UPDATE users SET team_id=NULL WHERE id=:user_id")
+    db.session.execute(sql, {"user_id":user_id})
+    db.session.commit()

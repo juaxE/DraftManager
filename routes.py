@@ -8,7 +8,7 @@ def index():
         team_list = teams.load_free_teams()
         user_team = teams.check_team(session["username"])
         next_pick = draft.next_pick()
-        return render_template("index.html", team_list=team_list, user_team=user_team, next_pick=next_pick, uid=session["user_id"])
+        return render_template("index.html", team_list=team_list, user_team=user_team, next_pick=next_pick)
     else:
         return render_template("index.html")
 
@@ -18,8 +18,7 @@ def login():
     password = request.form["password"]
     if users.login(username, password):
         return redirect("/")
-    else:
-        return render_template("error.html", message="Wrong username or password")
+    return render_template("error.html", message="Wrong username or password")
 
 @app.route("/logout")
 def logout():
@@ -55,6 +54,21 @@ def delete():
     users.delete_user(id)
     return redirect("/users")
 
+@app.route("/deleteOwnUser", methods=["POST"])
+def delete_own():
+    if session["admin"]:
+        return render_template("error.html", message="Admins can not delete their account")
+    else:    
+        id = session["user_id"]
+        users.delete_user(id)
+        users.logout()
+        return redirect("/")
+
+@app.route("/profile")
+def profile():
+    user_team = teams.check_team(session["username"])
+    return render_template("profile.html", user_team=user_team)
+
 
 
 @app.route("/config")
@@ -87,7 +101,7 @@ def update_config():
     if draft_config.update_config(id, name, participants, rounds, snake):
         return redirect("config")
     else:
-        render_template("error.html", message="Settings update failed")
+        return render_template("error.html", message="Settings update failed")
 
 
         
@@ -102,15 +116,18 @@ def update_teams():
 
 @app.route("/selectTeam", methods=["POST"])    
 def select_team():
-    teamId = request.form["teamId"]
+    team_id = request.form["team_id"]
     username = request.form["username"]
-    if teams.select_team(teamId, username):
+    if teams.select_team(team_id, username):
         return redirect("/")
     else:
         return render_template("error.html", message="Team is already taken.")
-    
 
-
+@app.route("/unselectTeam", methods=["POST"])    
+def unselect_team():
+    user_id = session["user_id"]
+    teams.un_select_team(user_id)    
+    return redirect("/")
 
 
 
@@ -133,19 +150,19 @@ def add_player():
     
     
 @app.route("/list")
-def draftList():
-        user_id=session["user_id"]
-        max_items = 10
-        current_list=user_players.load_list(user_id)
-        players_list=players.load_available_players(user_id)
-        return render_template("list.html", current_list=current_list, players_list=players_list, max_items=max_items)
+def draft_list():
+    user_id=session["user_id"]
+    max_items = 10
+    current_list=user_players.load_list(user_id)
+    players_list=players.load_available_players(user_id)
+    return render_template("list.html", current_list=current_list, players_list=players_list, max_items=max_items)
     
 @app.route("/addItem", methods=["POST"])
 def add_item_to_list():
     user_id = session["user_id"]
     player_id = request.form["player_id"]
     list_order = request.form["order"]
-    
+   
     if (user_players.add_item(user_id, player_id, list_order)):
         return redirect(request.referrer)
     else:
@@ -168,3 +185,9 @@ def delete_item_in_list():
     order = request.form["order"]
     user_players.delete_item(item_id, user_id, order)
     return redirect(request.referrer)
+
+
+@app.route("/draft")
+def draft_page():
+    next_pick = draft.next_pick()    
+    return render_template("draft.html")

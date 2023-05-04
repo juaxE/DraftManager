@@ -9,13 +9,12 @@ def check(username, password):
     user = result.fetchone()
     if not user:
         return False
-    else:
-        hash_value = user.password
+    hash_value = user.password
     if check_password_hash(hash_value, password):
         check_admin(username)
         return True
-    else:
-        return False
+    return False
+        
     
 def check_admin(username):
     sql = text('SELECT admin FROM users WHERE username=:username')
@@ -28,18 +27,17 @@ def check_admin(username):
     return
     
 def login(username, password):
-    if(check(username,password)==True):
+    if(check(username,password)):
         session["username"] = username
         set_id(username)
-        
         return True
-    else:
-        return False
+    return False
     
 def set_id(username):
     sql = text("SELECT users.id FROM users WHERE users.username=:username")
     result = db.session.execute(sql, {"username":username})
-    session["user_id"] = result.scalar()    
+    session["user_id"] = result.scalar()
+    return    
 
 def register_send(username, password):
     hash_value = generate_password_hash(password)
@@ -53,13 +51,8 @@ def register_send(username, password):
     set_id(username)
     return True
 
-def logout():    
-    try:
-        del session["username"]
-        del session["user_id"]
-        del session["admin"]
-    except:
-        pass
+def logout():
+    session.clear()
 
 def list_users():
     sql = text("SELECT users.id, users.username, teams.name FROM users LEFT JOIN teams ON users.team_id = teams.id WHERE admin IS NULL")
