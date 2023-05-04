@@ -1,3 +1,4 @@
+{%if session.username %}
 {% extends "layout.html" %}
 {% block title %}Etusivu{% endblock %}
 {% block content %}
@@ -7,3 +8,9 @@ Error: {{ message }}
 <a href="/">Return to front page</a>
 
 {% endblock %}
+
+{%else%}
+Error: {{ message }}
+</br>
+<a href="/">Return to login</a>
+{% endif %}
