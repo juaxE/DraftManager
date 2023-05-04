@@ -2,21 +2,46 @@
 {% block title %}My draft list{% endblock %}
 {% block content %}
 <h2>My list</h2>
+<div>
 
 {% for item in currentList %}
+<div>
+<form action="/editItem" method="POST">
+    <input type="hidden" name="itemId" value="{{ item[0] }}">
+    <input type="hidden" name="order" value="{{ item[1] }}">
+    <select class="form-select" name="playerId">
+        <option value="{{ item[2] }}" selected {% if item[6] %} disabled {% endif %}>{{ item[3] }}. {{ item[4] }}, {{ item[5] }}</option>
+        {% for player in playersList %}
 
-{{item}}
-{% endfor %}
-<h3>Available players</h3>
-{% for player in playersList %}
-
-{% if not player[4] %}
-<form>
-    
+            {% if not player[4] and item[2]!=player[0] %}
+            <option value="{{ player[0] }}">{{ player[1] }}. {{ player[2] }}, {{ player[3] }}</option>
+            
+            {% endif %}
+        {% endfor %}
+    </select>
+    <button type="submit" class="btn btn-dark">Confirm change</button>
+    <button type="submit" class="btn btn-danger" formaction="/deleteItem">Delete</button>
 </form>
-{{player}}
-{% endif %}
-
+</div>
 {% endfor %}
 
+{% if currentList|length < maxLength %}
+<div>
+<form action="/addItem" method="POST">
+    <input type="hidden" name="order" value="{{ currentList|length +1 }}">
+    <select class="form-select" name="playerId">
+        {% for player in playersList %}
+
+            {% if not player[4] %}
+
+            <option value="{{ player[0] }}">{{ player[1] }}. {{ player[2] }}, {{ player[3] }}</option>
+            
+            {% endif %}
+
+        {% endfor %}
+    </select>
+    <button type="submit" class="btn btn-primary">Confirm</button>
+</form>
+</div>
+{% endif %}
 {% endblock %}

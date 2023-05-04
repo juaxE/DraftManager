@@ -16,6 +16,12 @@ def loadPlayers():
     result = db.session.execute(sql)
     return result.fetchall()
 
+def loadAvailablePlayers(user_id):
+    sql = text("SELECT p.id, p.iss, p.name, p.role FROM players p WHERE p.drafted=FALSE " \
+               "AND NOT EXISTS( SELECT 1 FROM user_players up WHERE up.user_id=:user_id AND up.player_id=p.id) ORDER BY iss ASC")
+    result = db.session.execute(sql, {"user_id":user_id})
+    return result.fetchall()
+
 def deletePlayer(id):
     sql = text("DELETE FROM players WHERE id=:id")
     db.session.execute(sql, {"id":id})

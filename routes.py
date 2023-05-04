@@ -137,9 +137,10 @@ def draftList(user_id):
     if user_id != session["userId"]:
         return render_template("error.html", message="Unauthorized")
     else:
+        maxLength = 10
         currentList=list.loadList(user_id)
-        playersList=players.loadPlayers()
-        return render_template("list.html", currentList=currentList, playersList=playersList)
+        playersList=players.loadAvailablePlayers(user_id)
+        return render_template("list.html", currentList=currentList, playersList=playersList, maxLength=maxLength)
     
 @app.route("/addItem", methods=["POST"])
 def addItemToList():
@@ -150,4 +151,22 @@ def addItemToList():
     if (list.addItem(userId, playerId, listOrder)):
         return redirect(request.referrer)
     else:
-        return render_template("error.html", message="Index already occupied.")
+        return render_template("error.html", message="Index not unique.")
+    
+@app.route("/editItem", methods=["POST"])
+def editItemInList():
+    userId = session["userId"]
+    playerId = request.form["playerId"]
+    itemId = request.form["itemId"]
+    if (list.editItem(itemId,userId,playerId)):
+        return redirect(request.referrer)
+    else:
+        return render_template("error.html", message="Index not unique")
+    
+@app.route("/deleteItem", methods=["POST"])
+def delete_item_in_list():
+    user_id = session["userId"]
+    item_id = request.form["itemId"]
+    order = request.form["order"]
+    list.deleteItem(item_id, user_id, order)
+    return redirect(request.referrer)
