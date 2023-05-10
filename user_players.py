@@ -1,11 +1,19 @@
 from sqlalchemy import text
 from db import db
-
+import players
 
 def load_list(user_id):
     sql = text("SELECT user_players.id, user_players.list_order, players.id, players.iss, players.name, players.role, players.drafted FROM user_players INNER JOIN players ON user_players.player_id=players.id WHERE user_players.user_id=:user_id ORDER BY user_players.list_order ASC")
     result = db.session.execute(sql, {"user_id":user_id})
     return result.fetchall()
+
+def first_in_list(user_id):
+    sql = text("SELECT up.player_id FROM user_players up JOIN players p ON up.player_id = p.id" \
+               " WHERE up.user_id =:user_id AND p.drafted IS FALSE ORDER BY up.list_order ASC")
+    result = db.session.execute(sql, {"user_id":user_id})
+    if result:
+        return result.fetchone()
+    return players.load_available_players()[0][0]
 
 def add_item(user_id,  player_id, list_order):    
     try:

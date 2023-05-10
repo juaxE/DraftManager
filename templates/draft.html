@@ -2,5 +2,32 @@
 {% block title %}Draft{% endblock %}
 {% block content %}
 
+{% if session.admin %}
+
+<form action="/makeNextPick" method="POST">
+    <button type="submit" class="btn btn-primary">Make next pick</button>
+</form>
+
+
+{% endif %}
+
+<table class="table table-dark">
+    <tr>
+        <th>Pick</th>
+        <th>Team</th>
+        <th>Player name</th>
+        <th>Player ISS</th>
+    </tr>
+{% for pick in picks %}
+    <tr {% if pick[0] == next_pick[0] %} class= "bg-primary" 
+        {% elif pick[0] > next_pick[0] %} class= "bg-info" 
+        {% endif %}>
+        <td>{{ pick[1] }}</td>
+        <td>{{ pick[2] }}</td>
+        <td>{{ pick[3] }}</td>
+        <td>{{ pick[4] }}</td>
+    </tr>
+{% endfor %}
+</table>
 
 {% endblock %}

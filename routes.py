@@ -154,7 +154,7 @@ def draft_list():
     user_id=session["user_id"]
     max_items = 10
     current_list=user_players.load_list(user_id)
-    players_list=players.load_available_players(user_id)
+    players_list=players.load_available_players_for_user(user_id)
     return render_template("list.html", current_list=current_list, players_list=players_list, max_items=max_items)
     
 @app.route("/addItem", methods=["POST"])
@@ -189,5 +189,13 @@ def delete_item_in_list():
 
 @app.route("/draft")
 def draft_page():
-    next_pick = draft.next_pick()    
-    return render_template("draft.html")
+    next_pick = draft.next_pick()
+    picks = draft.picks_list()    
+    return render_template("draft.html", next_pick = next_pick, picks = picks)
+
+@app.route("/makeNextPick", methods=["POST"])
+def admin_make_pick():
+    if "admin" in session:
+        draft.make_next_pick()
+        return redirect(request.referrer)
+    return render_template("error.html", message="Not Authorized")
