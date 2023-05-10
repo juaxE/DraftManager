@@ -9,15 +9,24 @@ def init_picks(config, teamsInfo):
     rounds = config[3]
     team_ids = [item[0] for item in teamsInfo]
     total_picks = participants*rounds
+    is_snake = config[4]
+    ascending = True
     
     for i in range(total_picks):
         pickorder=i+1
         team_index = i%participants
+        if (not ascending) and is_snake:
+            team_index = participants -1 - team_index
         team_id = team_ids[team_index]
         
+             
         sql = text("INSERT INTO draft_picks (pickorder, team_id, created_at) VALUES (:pickorder, :team_id, NOW())")
         db.session.execute(sql, {"pickorder":pickorder, "team_id":team_id})
         db.session.commit()
+        
+        if is_snake and (i + 1) % participants == 0:
+            ascending = not ascending
+            
 
 def picks_list():
     sql = text("SELECT dp.id, dp.pickorder, t.name, p.name, p.iss t FROM draft_picks dp LEFT JOIN teams t ON dp.team_id = t.id" \
