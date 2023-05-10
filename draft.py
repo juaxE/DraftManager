@@ -11,41 +11,51 @@ def init_picks(config, teamsInfo):
     total_picks = participants*rounds
     is_snake = config[4]
     ascending = True
-    
+
     for i in range(total_picks):
         pickorder=i+1
         team_index = i%participants
         if (not ascending) and is_snake:
             team_index = participants -1 - team_index
-        team_id = team_ids[team_index]
-        
-             
-        sql = text("INSERT INTO draft_picks (pickorder, team_id, created_at) VALUES (:pickorder, :team_id, NOW())")
+        team_id = team_ids[team_index]      
+        sql = text("INSERT INTO draft_picks (pickorder, team_id, created_at)"\
+                    " VALUES (:pickorder, :team_id, NOW())")
         db.session.execute(sql, {"pickorder":pickorder, "team_id":team_id})
-        db.session.commit()
-        
+        db.session.commit()        
         if is_snake and (i + 1) % participants == 0:
             ascending = not ascending
-            
 
 def picks_list():
-    sql = text("SELECT dp.id, dp.pickorder, t.name, p.name, p.iss t FROM draft_picks dp LEFT JOIN teams t ON dp.team_id = t.id" \
+    sql = text("SELECT dp.id, dp.pickorder, t.name, p.name, p.iss t FROM draft_picks dp"\
+                " LEFT JOIN teams t ON dp.team_id = t.id"\
                 " LEFT JOIN players p ON dp.player_id = p.id ORDER BY pickorder ASC")
     result = db.session.execute(sql)
     return result.fetchall()
+
+def team_picks_list(team_id):
+    sql = text("SELECT dp.pickorder, p.name, p.iss, p.role t FROM draft_picks dp"\
+                " LEFT JOIN teams t ON dp.team_id = t.id"\
+                " LEFT JOIN players p ON dp.player_id = p.id"\
+                " WHERE dp.team_id=:team_id ORDER BY pickorder ASC")
+    result = db.session.execute(sql, {"team_id":team_id})
+    return result.fetchall()
+    
 
 def picks_left():
     sql = text("SELECT COUNT(id) FROM draft_picks WHERE player_id IS NULL")
     result = db.session.execute(sql)
     return result.scalar()
-        
+
 def next_pick():
-    sql = text("SELECT id, pickorder, team_id FROM draft_picks WHERE player_id IS NULL ORDER BY pickorder ASC")
+    sql = text("SELECT id, pickorder, team_id FROM draft_picks"\
+               " WHERE player_id IS NULL ORDER BY pickorder ASC")
     result = db.session.execute(sql)
     return result.fetchone()
 
 def last_pick():
-    sql = text("SELECT id, player_id FROM draft_picks WHERE player_id IS NOT NULL ORDER BY pickorder DESC limit 1")
+    sql = text("SELECT id, player_id FROM draft_picks"\
+               " WHERE player_id IS NOT NULL"\
+               " ORDER BY pickorder DESC limit 1")
     result = db.session.execute(sql)
     return result.fetchone()
 
@@ -62,7 +72,7 @@ def make_next_pick():
     db.session.execute(sql, {"player_id":player_id, "pick_id":pick_id})
     db.session.commit() 
     players.set_drafted(player_id)
-    
+
 def revert_last_pick():
     pick = last_pick()
     pick_id = pick[0]
@@ -71,5 +81,3 @@ def revert_last_pick():
     db.session.execute(sql, {"pick_id":pick_id})
     db.session.commit()
     players.set_undrafted(player_id)
-    
-    

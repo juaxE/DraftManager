@@ -1,5 +1,5 @@
-from app import app
 from flask import render_template, request, redirect, session
+from app import app
 import users, players, draft_config, teams, draft, user_players
 
 @app.route("/")
@@ -7,8 +7,13 @@ def index():
     if "username" in session:
         team_list = teams.load_free_teams()
         user_team = teams.check_team(session["username"])
+        user_team_id = None
+        if (user_team):
+            user_team_id=user_team[0]
+        user_picks = draft.team_picks_list(user_team_id)            
         next_pick = draft.next_pick()
-        return render_template("index.html", team_list=team_list, user_team=user_team, next_pick=next_pick)
+        return render_template("index.html", team_list=team_list, 
+                               user_team=user_team, next_pick=next_pick, user_picks=user_picks)
     else:
         return render_template("index.html")
 
@@ -40,9 +45,7 @@ def register_send():
         return redirect("/")
     else:
         return render_template("error.html", message="Registering failed. Try another username")
-    
 
-    
 @app.route("/users")
 def users_list():
     users_listed=users.list_users()
@@ -141,33 +144,31 @@ def get_players():
 def add_player():
     iss = request.form["iss"]
     name = request.form["name"]
-    role = request.form["role"]
-    
+    role = request.form["role"]   
     if players.add_player(iss, name, role):
         return redirect("players")
     else:
         return render_template("error.html", message="ISS number must be unique")
-    
-    
+
 @app.route("/list")
 def draft_list():
     user_id=session["user_id"]
     max_items = 10
     current_list=user_players.load_list(user_id)
     players_list=players.load_available_players_for_user(user_id)
-    return render_template("list.html", current_list=current_list, players_list=players_list, max_items=max_items)
-    
+    return render_template("list.html", current_list=current_list, 
+                           players_list=players_list, max_items=max_items)
+
 @app.route("/addItem", methods=["POST"])
 def add_item_to_list():
     user_id = session["user_id"]
     player_id = request.form["player_id"]
     list_order = request.form["order"]
-   
     if (user_players.add_item(user_id, player_id, list_order)):
         return redirect(request.referrer)
     else:
         return render_template("error.html", message="Index not unique.")
-    
+
 @app.route("/editItem", methods=["POST"])
 def edit_item_in_list():
     user_id = session["user_id"]
