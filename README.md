@@ -5,7 +5,6 @@ Two usertypes: Admin, User.
 
 **User:**
  - Can create user
- - Can change password
  - Can delete own profile
  - Can select team
  - Can create and edit a list for the draft
@@ -17,4 +16,3 @@ Two usertypes: Admin, User.
  - Can add teams
  - Can add players in the draft
  - Can choose when draft starts and progresses 
- - Can edit draft results
