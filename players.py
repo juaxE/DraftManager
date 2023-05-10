@@ -22,14 +22,28 @@ def load_available_players_for_user(user_id):
     result = db.session.execute(sql, {"user_id":user_id})
     return result.fetchall()
 
-def load_available_players():
+def load_next_available_player():
     sql = text("SELECT p.id, p.iss, p.name, p.role FROM players p WHERE p.drafted=FALSE " \
-               "ORDER BY iss ASC")
-    result = db.session.execute(sql,)
-    return result.fetchall()
+               "ORDER BY iss ASC limit 1")
+    result = db.session.execute(sql)
+    return result.scalar()
+
+def check_available():
+    sql = text("SELECT COUNT(drafted) FROM players WHERE drafted=False")
+    result = db.session.execute(sql)
+    available = result.scalar()
+    if available > 0:
+        return True
+    return False
+    
 
 def set_drafted(player_id):
     sql = text("UPDATE players SET drafted=True WHERE id=:player_id")
+    db.session.execute(sql, {"player_id":player_id})
+    db.session.commit()
+    
+def set_undrafted(player_id):
+    sql = text("UPDATE players SET drafted=False WHERE id=:player_id")
     db.session.execute(sql, {"player_id":player_id})
     db.session.commit()
 

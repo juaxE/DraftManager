@@ -190,12 +190,22 @@ def delete_item_in_list():
 @app.route("/draft")
 def draft_page():
     next_pick = draft.next_pick()
-    picks = draft.picks_list()    
-    return render_template("draft.html", next_pick = next_pick, picks = picks)
+    picks = draft.picks_list()
+    players_available = players.check_available()
+    picks_left = draft.picks_left()
+    return render_template("draft.html", next_pick=next_pick, picks=picks,
+                           players_available=players_available, picks_left=picks_left) 
 
 @app.route("/makeNextPick", methods=["POST"])
 def admin_make_pick():
     if "admin" in session:
         draft.make_next_pick()
+        return redirect(request.referrer)
+    return render_template("error.html", message="Not Authorized")
+
+@app.route("/revertLastPick", methods=["POST"])
+def revert_pick():
+    if "admin" in session:
+        draft.revert_last_pick()
         return redirect(request.referrer)
     return render_template("error.html", message="Not Authorized")

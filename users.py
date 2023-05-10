@@ -52,7 +52,6 @@ def register_send(username, password):
     return True
 
 def get_team_owner(team_id):
-    
     try:
         sql = text("SELECT u.id FROM users u JOIN teams t ON u.team_id = t.id WHERE t.id=:team_id")
         result = db.session.execute(sql, {"team_id":team_id})

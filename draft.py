@@ -24,9 +24,19 @@ def picks_list():
                 " LEFT JOIN players p ON dp.player_id = p.id ORDER BY pickorder ASC")
     result = db.session.execute(sql)
     return result.fetchall()
+
+def picks_left():
+    sql = text("SELECT COUNT(id) FROM draft_picks WHERE player_id IS NULL")
+    result = db.session.execute(sql)
+    return result.scalar()
         
 def next_pick():
     sql = text("SELECT id, pickorder, team_id FROM draft_picks WHERE player_id IS NULL ORDER BY pickorder ASC")
+    result = db.session.execute(sql)
+    return result.fetchone()
+
+def last_pick():
+    sql = text("SELECT id, player_id FROM draft_picks WHERE player_id IS NOT NULL ORDER BY pickorder DESC limit 1")
     result = db.session.execute(sql)
     return result.fetchone()
 
@@ -36,12 +46,21 @@ def make_next_pick():
     team_picking = pick[2]
     user_id = users.get_team_owner(team_picking)
     if user_id:
-        player_id = user_players.first_in_list(user_id)[0]
+        player_id = user_players.first_in_list(user_id)
     else:
-        player_id = players.load_available_players()[0][0]
+        player_id = players.load_next_available_player()
     sql = text("UPDATE draft_picks SET player_id=:player_id WHERE id =:pick_id")
     db.session.execute(sql, {"player_id":player_id, "pick_id":pick_id})
     db.session.commit() 
     players.set_drafted(player_id)
+    
+def revert_last_pick():
+    pick = last_pick()
+    pick_id = pick[0]
+    player_id = pick[1]
+    sql = text("UPDATE draft_picks SET player_id = NULL WHERE id=:pick_id")
+    db.session.execute(sql, {"pick_id":pick_id})
+    db.session.commit()
+    players.set_undrafted(player_id)
     
     

@@ -9,11 +9,13 @@ def load_list(user_id):
 
 def first_in_list(user_id):
     sql = text("SELECT up.player_id FROM user_players up JOIN players p ON up.player_id = p.id" \
-               " WHERE up.user_id =:user_id AND p.drafted IS FALSE ORDER BY up.list_order ASC")
+               " WHERE up.user_id =:user_id AND p.drafted IS FALSE ORDER BY up.list_order ASC limit 1")
     result = db.session.execute(sql, {"user_id":user_id})
-    if result:
-        return result.fetchone()
-    return players.load_available_players()[0][0]
+    player_id = result.scalar()
+    if player_id:
+        return player_id
+    player_id = players.load_next_available_player()  
+    return player_id
 
 def add_item(user_id,  player_id, list_order):    
     try:
