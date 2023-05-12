@@ -5,13 +5,14 @@
 {% if session.admin %}
 
 <h3>Add Player</h3>
-<form action="/addPlayer" method="POST">
-    <label>ISS</label>
-        <input name="iss" type="number" min ="1" {% if players_list %} value="{{players_list[0][1]+1}}" {% endif %}>
-    <label>Name</label>
+<div class="d-flex gap-2 justify-content-left py-2 border">
+    <form action="/addPlayer" method="POST">
+        <label>ISS</label>
+        <input name="iss" type="number" min ="1" max="5000" {% if players_list %} value="{{players_list[0][1]+1}}" {% endif %}>
+        <label>Name</label>
         <input name="name" type="text" maxlength="100">
-    <label>Role</label>
-        <select name="role">
+        <label>Role</label>
+        <select class="form-select" name="role">
             <option value="G">G</option>
             <option value="LD">LD</option>
             <option value="RD">RD</option>
@@ -19,28 +20,33 @@
             <option value="C">C</option>
             <option value="RW">RW</option>
         </select>
-    <button type="submit">Add player</button>
-</form>
+        <button class="btn btn-info" type="submit">Add player</button>
+    </form>
+</div>
 
 {% endif %}
-<table>
+<table class="table table-sm table-dark">
     <tr>
         <th>ISS</th>
         <th>Name</th>
         <th>Role</th>
+        {% if session.admin %}
         <th>Delete</th>
+        {% endif %}
     </tr>
 {% for player in players_list %}
 <tr>
     <td>{{ player[1] }}</td>
     <td>{{ player[2] }}</td>
     <td>{{ player[3] }}</td>
+    {% if session.admin %}
     <td>
         <form method="post" action="/deletePlayer">
             <input type="hidden" name="id" value="{{ player[0] }}">
             <button class="btn btn-danger" type="submit">Delete</button>
         </form> 
     </td>
+    {% endif %}
 </tr>
 {% endfor %}
 </table>

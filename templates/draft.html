@@ -4,7 +4,7 @@
 <h2 class="display-5 fw-bold">Draft</h2>
 {% if session.admin %}
 
-<div class="row">
+<div class="d-flex gap-2 justify-content-left py-2">
     <div>
         <form action="/makeNextPick" method="POST">
             <button type="submit" class="btn btn-primary" {% if not players_available or picks_left == 0 %} disabled {% endif %}>Make next pick</button>
