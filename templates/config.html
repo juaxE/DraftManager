@@ -7,52 +7,55 @@
 {% if configuration[5] == 0 %}
 
 <form  action="/updateConfig" method="POST" >
+    <div class="mb-3">
     <input type="hidden" name="id" value="{{ configuration[0] }}">
-    <label>Name</label>
-        <input name="name" type="text" value="{{ configuration[1] }}">
-    <label>Participants</label>
-        <input name="participants" type="number" value="{{ configuration[2] }}" min="1" max="50">
-    <label>Rounds</label>
-        <input name="rounds" type="number" value="{{ configuration[3] }}" min="1" max="40">
-    <label>Snake</label>
-        <select name="snake">
+    <label class="form-label">Name</label>
+        <input class="form-control" name="name" type="text" maxlength="40" value="{{ configuration[1] }}" required>
+    <label class="form-label" >Participants</label>
+        <input name="participants" type="number" value="{{ configuration[2] }}" min="1" max="50" required>
+    <label class="form-label" >Rounds</label>
+        <input  name="rounds" type="number" value="{{ configuration[3] }}" min="1" max="40" required>
+    <label class="form-label" >Snake</label>
+        <select class="form-select"name="snake">
             <option value=1 {% if configuration[4] == 1 %} selected{% endif %}>Yes</option>
             <option value=0 {% if configuration[4] ==  0 %} selected{% endif %}>No</option>
         </select>
-    <button type="submit">Update draft settings</button>
+    <button class="btn btn-info"type="submit">Update draft settings</button>
+</div>
 </form>
+</br>
 <p>When you are sure the draft settings are correct, please confirm the draft settings from the button below.</p>
 <form action="/toggleConfirmConfig" method="POST" onsubmit="return confirm('Are you sure you want to confirm the draft settings?')">
     <input type="hidden" name="id" value="{{ configuration[0] }}">
     <input type="hidden" name="confirmed" value="{{ configuration[5] }}">
-    <button type="submit" >CONFIRM DRAFT SETTINGS</button>
+    <button class="btn btn-success" type="submit" >CONFIRM DRAFT SETTINGS</button>
 </form>
 
 
 {% else %}
 
-<form action="/toggleConfirmConfig" method="POST" onsubmit="return confirm('Are you sure you want to return to config? This resets teams.')">
+<form action="/toggleConfirmConfig" method="POST" onsubmit="return confirm('Are you sure you want to return to config? This resets the draft.')">
     <input type="hidden" name="id" value="{{ configuration[0] }}">
     <input type="hidden" name="confirmed" value="{{ configuration[5] }}">
-    <button type="submit" >Return to configuration</button>
+    <button class="btn btn-danger" type="submit" >Reset draft</button>
 </form>
-
+<br>
 <div>
 <h3>Set teamnames</h3>
 
 <form  action="/updateTeams" method="POST" onsubmit="return confirm('Are you sure you want to update teamnames?')">
-    
+     
 {% for team in teams_list %}
-<div>
-<input type="hidden" name="id" value="{{ team[0] }}">
-    <label>Name</label>
-        <input name="name" type="text" value="{{ team[1] }}">
-    <label>Position</label>
-        {{ team[2] }}
-</div>    
+    <div>
+        <input type="hidden" name="id" value="{{ team[0] }}">
+        <label class="form-label">Name</label>
+        <input name="name" maxlength="60" type="text" value="{{ team[1] }}">
+        <label class="form-label">Position</label>
+        <span>{{ team[2] }}</span>
+    </div>   
 {% endfor %}
-
-<button type="submit">Update teams</button>
+     
+<button class="btn btn-info" type="submit">Update teams</button>
 </form>
 </div>
 

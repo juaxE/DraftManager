@@ -1,7 +1,6 @@
 from db import db
 from sqlalchemy import text
 
-
 def load_config():
     sql = text("SELECT id, name, participants, rounds, snake, confirmed FROM draft_configuration")
     result = db.session.execute(sql)
