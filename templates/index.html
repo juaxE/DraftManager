@@ -10,6 +10,7 @@
 {% block content %}
 
 <h2>Welcome {{ session.username }}</h2>
+<br>
 
 {% if user_team %}
 <div class="row align-items-md-stretch">
@@ -55,7 +56,7 @@
 
 <form action="/selectTeam" method="POST">
     <input type="hidden" name="username" value="{{ session.username }}">
-    <select name="team_id">
+    <select class="form-select" name="team_id">
         {% for team in team_list %}
         <option value="{{team[0]}}">{{team[1]}}</option>
         {% endfor %}
