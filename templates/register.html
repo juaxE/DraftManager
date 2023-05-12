@@ -4,24 +4,25 @@
 <link rel="stylesheet" type="text/css" href="/static/custom.css">
 
 <title>DraftManager - Register</title>
-<h1>DraftManager</h1>
+<h2>DraftManager</h2>
 
 {% if session.username %}
-
-<p>You are already signed in as {{ session.username }}</p>
-<a href="/logout">Log out</a>
-
+<div class="container-fluid py4"></div>
+    <p>You are already signed in as {{ session.username }}</p>
+    <a href="/logout">Log out</a>
+</div>
 {% else %}
-
-<form action="/registerSend" method="POST">
-    <p>Username:<br>
-        <input type="text" name="username"></p>
-    <p>Password:<br>
-        <input type="password" name="password1"></p>
-    <p>Confirm password:<br>
-        <input type="password" name="password2"></p>
-<input type="submit" value="Register">
-</form>
-<br>
-Already have an account?<a href="/">Go to log in</a>
+<div class="container-fluid py4">
+    <form action="/registerSend" method="POST">
+        <p>Username:<br>
+            <input type="text" name="username"></p>
+        <p>Password:<br>
+            <input type="password" name="password1"></p>
+        <p>Confirm password:<br>
+            <input type="password" name="password2"></p>
+        <input class="btn btn-primary" type="submit" value="Register">
+    </form>
+    <br>
+    <span>Already have an account?<a href="/">Go to log in</a></span>
+</div>
 {% endif %}

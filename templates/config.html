@@ -1,9 +1,9 @@
 {% extends "layout.html" %}
-{% block title %}Draft settings{% endblock %}
+{% block title %}Configuration{% endblock %}
 {% block content %}
 
 {% if session.admin %}
-
+<h2 class="display-5 fw-bold">Configuration</h2>
 {% if configuration[5] == 0 %}
 
 <form  action="/updateConfig" method="POST" >
