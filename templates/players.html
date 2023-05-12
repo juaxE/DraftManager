@@ -28,12 +28,19 @@
         <th>ISS</th>
         <th>Name</th>
         <th>Role</th>
+        <th>Delete</th>
     </tr>
 {% for player in players_list %}
 <tr>
     <td>{{ player[1] }}</td>
     <td>{{ player[2] }}</td>
     <td>{{ player[3] }}</td>
+    <td>
+        <form method="post" action="/deletePlayer">
+            <input type="hidden" name="id" value="{{ player[0] }}">
+            <button class="btn btn-danger" type="submit">Delete</button>
+        </form> 
+    </td>
 </tr>
 {% endfor %}
 </table>

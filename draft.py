@@ -77,7 +77,7 @@ def revert_last_pick():
     pick = last_pick()
     pick_id = pick[0]
     player_id = pick[1]
+    players.set_undrafted(player_id)
     sql = text("UPDATE draft_picks SET player_id = NULL WHERE id=:pick_id")
     db.session.execute(sql, {"pick_id":pick_id})
     db.session.commit()
-    players.set_undrafted(player_id)

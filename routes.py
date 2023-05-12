@@ -129,7 +129,7 @@ def select_team():
 @app.route("/unselectTeam", methods=["POST"])    
 def unselect_team():
     user_id = session["user_id"]
-    teams.un_select_team(user_id)    
+    teams.unselect_team(user_id)    
     return redirect("/")
 
 
@@ -142,18 +142,27 @@ def get_players():
     
 @app.route("/addPlayer", methods=["POST"])
 def add_player():
+    if not "admin" in session:
+        return render_template("error.html", message="Not Authorized")
     iss = request.form["iss"]
     name = request.form["name"]
     role = request.form["role"]   
     if players.add_player(iss, name, role):
         return redirect("players")
-    else:
-        return render_template("error.html", message="ISS number must be unique")
-
+    return render_template("error.html", message="ISS number must be unique")
+    
+@app.route("/deletePlayer", methods=["POST"])
+def del_player():
+    if not "admin" in session:
+        return render_template("error.html", message="Not Authorized")
+    player_id = request.form["id"]
+    players.delete_player(player_id)
+    return redirect(request.referrer)
+    
 @app.route("/list")
 def draft_list():
     user_id=session["user_id"]
-    max_items = 10
+    max_items = 100
     current_list=user_players.load_list(user_id)
     players_list=players.load_available_players_for_user(user_id)
     return render_template("list.html", current_list=current_list, 
