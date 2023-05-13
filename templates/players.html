@@ -28,11 +28,11 @@
 {% endif %}
 <table class="table table-sm table-dark">
     <tr>
-        <th>ISS</th>
-        <th>Name</th>
-        <th>Role</th>
+        <th class="sticky-header">ISS</th>
+        <th class="sticky-header">Name</th>
+        <th class="sticky-header">Role</th>
         {% if session.admin %}
-        <th>Delete</th>
+        <th class="sticky-header">Delete</th>
         {% endif %}
     </tr>
 {% for player in players_list %}

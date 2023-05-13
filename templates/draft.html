@@ -23,10 +23,10 @@
 
 <table class="table table-dark">
     <tr>
-        <th>Pick</th>
-        <th>Team</th>
-        <th>Player name</th>
-        <th>Player ISS</th>
+        <th class="sticky-header">Pick</th>
+        <th class="sticky-header">Team</th>
+        <th class="sticky-header">Player name</th>
+        <th class="sticky-header">Player ISS</th>
     </tr>
     {% for pick in picks %}
     <tr {% if pick[0] == next_pick[0] %} class= "bg-primary" 
