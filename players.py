@@ -49,6 +49,11 @@ def set_undrafted(player_id):
     db.session.execute(sql, {"player_id":player_id})
     db.session.commit()
 
+def set_all_undrafted():
+    sql = text("UPDATE players SET drafted=False")
+    db.session.execute(sql)
+    db.session.commit()
+
 def delete_player(player_id):
     sql = text("DELETE FROM players WHERE id=:player_id")
     db.session.execute(sql, {"player_id":player_id})

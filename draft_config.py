@@ -1,5 +1,6 @@
 from sqlalchemy import text
 from db import db
+import players
 
 
 def load_config():
@@ -27,6 +28,7 @@ def toggle_lock_config(config_id, confirmed):
     db.session.execute(sql, {"id":config_id, "confirmed":confirmed})
     db.session.commit()
     if confirmed == "False":
+        players.set_all_undrafted()
         return False
     return True
 

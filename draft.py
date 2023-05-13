@@ -80,3 +80,4 @@ def revert_last_pick():
     sql = text("UPDATE draft_picks SET player_id = NULL WHERE id=:pick_id")
     db.session.execute(sql, {"pick_id":pick_id})
     db.session.commit()
+
