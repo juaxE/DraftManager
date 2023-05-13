@@ -24,7 +24,7 @@
 {% endfor %}
 
 
-{% if current_list|length < max_items %}
+{% if current_list|length < max_items and players_list %}
 <div class="d-flex gap-2 justify-content-left py-2 border">
     <form action="/addItem" method="POST">
         <input type="hidden" name="order" value="{{ current_list|length +1 }}">
