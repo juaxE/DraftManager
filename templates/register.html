@@ -4,15 +4,18 @@
 <link rel="stylesheet" type="text/css" href="/static/custom.css">
 
 <title>DraftManager - Register</title>
-<h2>DraftManager</h2>
+
 
 {% if session.username %}
 <div class="container-fluid py4"></div>
+    <h2>DraftManager</h2>
     <p>You are already signed in as {{ session.username }}</p>
     <a href="/logout">Log out</a>
 </div>
 {% else %}
-<div class="container-fluid py4">
+
+<div class="d-flex flex-column min-vh-100 justify-content-center align-items-center">
+    <h2>DraftManager - Register</h2>
     <form action="/registerSend" method="POST">
         <p>Username:<br>
             <input type="text" name="username"></p>

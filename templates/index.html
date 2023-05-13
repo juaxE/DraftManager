@@ -69,9 +69,9 @@
 {% endblock %}
 
 {% else %}
-<div class="container-fluid py4">
+<div class="d-flex flex-column min-vh-100 justify-content-center align-items-center">
 <title>DraftManager - LogIn</title>
-<h1>DraftManager</h1>
+<h1>DraftManager - Log In</h1>
 
 <form action="/login" method="POST">
     <p>Username:<br>
@@ -80,8 +80,9 @@
     <input type="password" name="password"></p>
     <input class="btn btn-primary" type="submit" value="Log in">
 </form>
-
-<p>Don't have an account yet? <a href="/register">Register here</a></p>
+</br>
+<p>Don't have an account yet? </br>
+    <a href="/register">Register here</a></p>
 </div>
 
 {% endif %}
