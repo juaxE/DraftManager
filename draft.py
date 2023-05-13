@@ -4,24 +4,24 @@ import users
 import user_players
 import players
 
-def init_picks(config, teamsInfo):
+def init_picks(config, teams_info):
     participants = config[2]
     rounds = config[3]
-    team_ids = [item[0] for item in teamsInfo]
+    team_ids = [item[0] for item in teams_info]
     total_picks = participants*rounds
     is_snake = config[4]
     ascending = True
 
     for i in range(total_picks):
-        pickorder=i+1
+        pickorder = i+1
         team_index = i%participants
         if (not ascending) and is_snake:
             team_index = participants -1 - team_index
-        team_id = team_ids[team_index]      
+        team_id = team_ids[team_index]
         sql = text("INSERT INTO draft_picks (pickorder, team_id, created_at)"\
                     " VALUES (:pickorder, :team_id, NOW())")
         db.session.execute(sql, {"pickorder":pickorder, "team_id":team_id})
-        db.session.commit()        
+        db.session.commit()
         if is_snake and (i + 1) % participants == 0:
             ascending = not ascending
 
@@ -39,7 +39,6 @@ def team_picks_list(team_id):
                 " WHERE dp.team_id=:team_id ORDER BY pickorder ASC")
     result = db.session.execute(sql, {"team_id":team_id})
     return result.fetchall()
-    
 
 def picks_left():
     sql = text("SELECT COUNT(id) FROM draft_picks WHERE player_id IS NULL")
@@ -70,7 +69,7 @@ def make_next_pick():
         player_id = players.load_next_available_player()
     sql = text("UPDATE draft_picks SET player_id=:player_id WHERE id =:pick_id")
     db.session.execute(sql, {"player_id":player_id, "pick_id":pick_id})
-    db.session.commit() 
+    db.session.commit()
     players.set_drafted(player_id)
 
 def revert_last_pick():

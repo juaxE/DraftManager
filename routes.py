@@ -228,6 +228,7 @@ def draft_list():
     if not users.require_user():
         return render_template("error.html", message="Please log in")
     user_id = session["user_id"]
+    user_players.check_order(user_id)
     max_items = 100
     current_list = user_players.load_list(user_id)
     players_list = players.load_available_players_for_user(user_id)
