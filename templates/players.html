@@ -8,9 +8,9 @@
 <div class="d-flex gap-2 justify-content-left py-2 border">
     <form action="/addPlayer" method="POST">
         <label>ISS</label>
-        <input name="iss" type="number" min ="1" max="5000" {% if players_list %} value="{{players_list[0][1]+1}}" {% endif %}>
+        <input name="iss" type="number" min ="1" max="32767" {% if players_list %} value="{{players_list[0][1]+1}}" {% endif %}>
         <label>Name</label>
-        <input name="name" type="text" maxlength="100">
+        <input name="name" type="text" minlength="1" maxlength="100">
         <label>Role</label>
         <select class="form-select" name="role">
             <option value="G">G</option>

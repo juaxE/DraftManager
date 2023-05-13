@@ -18,11 +18,11 @@
     <h2>DraftManager - Register</h2>
     <form action="/registerSend" method="POST">
         <p>Username:<br>
-            <input type="text" name="username"></p>
+            <input type="text" name="username" minlength="3" maxlength="20"></p>
         <p>Password:<br>
-            <input type="password" name="password1"></p>
+            <input type="password" name="password1" minlength="5" maxlength="30"></p>
         <p>Confirm password:<br>
-            <input type="password" name="password2"></p>
+            <input type="password" name="password2" minlength="5" maxlength="30"></p>
         <input class="btn btn-primary" type="submit" value="Register">
     </form>
     <br>

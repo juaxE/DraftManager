@@ -10,7 +10,7 @@
     <div class="mb-3">
     <input type="hidden" name="id" value="{{ configuration[0] }}">
     <label class="form-label">Name</label>
-        <input class="form-control" name="name" type="text" maxlength="40" value="{{ configuration[1] }}" required>
+        <input class="form-control" name="name" type="text" minlength="1" maxlength="40" value="{{ configuration[1] }}" required>
     <label class="form-label" >Participants</label>
         <input name="participants" type="number" value="{{ configuration[2] }}" min="1" max="50" required>
     <label class="form-label" >Rounds</label>
@@ -49,7 +49,7 @@
     <div>
         <input type="hidden" name="id" value="{{ team[0] }}">
         <label class="form-label">Name</label>
-        <input name="name" maxlength="60" type="text" value="{{ team[1] }}">
+        <input name="name" minlength="1" maxlength="60" type="text" value="{{ team[1] }}">
         <label class="form-label">Position</label>
         <span>{{ team[2] }}</span>
     </div>   

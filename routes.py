@@ -41,7 +41,13 @@ def register():
 @app.route("/registerSend", methods=["POST"])
 def register_send():
     username = request.form["username"]
+    if not 2 < len(username) < 21:
+        return render_template("error.html",
+                               message="Username needs to be between 3 and 20 characters long")
     password1 = request.form["password1"]
+    if not 4 < len(password1) < 31:
+        return render_template("error.html",
+                               message="Your password needs to be between 5 and 30 characters long")
     password2 = request.form["password2"]
     if password1 != password2:
         return render_template("error.html", message="Passwords do not match")
@@ -115,13 +121,21 @@ def update_config():
         return render_template("error.html", message="Not Authorized")
     config_id = request.form["id"]
     name = request.form["name"]
+    if not 0 < len(name) < 41:
+        return render_template("error.html",
+                               message="Name must be non-empty and maximum of 40 characters")
     participants = request.form["participants"]
+    if not 0 < int(participants) < 51:
+        return render_template("error.html",
+                               message="Amount of participants must be between 1 and 50")
     rounds = request.form["rounds"]
+    if not 0 < int(rounds) < 41:
+        return render_template("error.html",
+                               message="Amount of rounds must be between 1 and 40")
     snake = request.form["snake"]
     if draft_config.update_config(config_id, name, participants, rounds, snake):
         return redirect("config")
-    return render_template("error.html", message="Settings update failed")
-
+    return render_template("error.html", message="Config update failed")
 
 @app.route("/updateTeams", methods=["POST"])
 def update_teams():
@@ -129,9 +143,14 @@ def update_teams():
         return render_template("error.html", message="Not Authorized")
     team_ids = request.form.getlist("id")
     names = request.form.getlist("name")
+    for name in names:
+        if not 0 < len(name) < 61:
+            return render_template("error.html",
+                                   message="Teamnames must be non-empty and maximum 60 characters")
     if teams.update_teams(team_ids, names):
         return redirect("config")
     return render_template("error.html", message="Teamnames must be unique")
+
 
 @app.route("/selectTeam", methods=["POST"])
 def select_team():
@@ -164,7 +183,12 @@ def add_player():
     if not users.require_admin():
         return render_template("error.html", message="Not Authorized")
     iss = request.form["iss"]
+    if not 0 < int(iss) < 32768:
+        return render_template("error.html", message="Iss number must be between 1 and 32767")
     name = request.form["name"]
+    if not 0 < len(name) < 101:
+        return render_template("error.html",
+                               message="Name must be non-empty and maximum 100 characters long")
     role = request.form["role"]
     if players.add_player(iss, name, role):
         return redirect("players")
