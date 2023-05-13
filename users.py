@@ -22,9 +22,6 @@ def check_admin(username):
     admin_status = result.fetchone()
     if admin_status[0]==True:
         session["admin"] = True
-    else:
-        session["admin"] = False
-    return
     
 def login(username, password):
     if(check(username,password)):
@@ -76,3 +73,13 @@ def reset_team_ids():
     sql = text("UPDATE users SET team_id=NULL")
     db.session.execute(sql)
     db.session.commit()
+
+def require_admin():
+    if "admin" in session:
+        return True
+    return False
+
+def require_user():
+    if "username" in session:
+        return True
+    return False
