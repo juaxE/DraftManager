@@ -7,11 +7,13 @@
 <div class="d-flex gap-2 justify-content-left py-2">
     <div>
         <form action="/makeNextPick" method="POST">
+            <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
             <button type="submit" class="btn btn-primary" {% if not players_available or picks_left == 0 %} disabled {% endif %}>Make next pick</button>
         </form>
     </div>
     <div>
         <form action="/revertLastPick" method="POST" onsubmit="return confirm('Are you sure you want to revert the last pick?')">
+            <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
             <button type="submit" class="btn btn-danger" {% if picks|length == picks_left %} disabled {% endif %}>Revert last pick</button>
         </form>
     </div>

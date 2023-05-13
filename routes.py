@@ -1,4 +1,4 @@
-from flask import render_template, request, redirect, session
+from flask import render_template, request, redirect, session, abort
 from app import app
 import users
 import players
@@ -66,6 +66,8 @@ def users_list():
 
 @app.route("/deleteUser", methods=["POST"])
 def deleting_user():
+    if session["csrf_token"] != request.form["csrf_token"]:
+        abort(403)
     if not users.require_admin():
         return render_template("error.html", message="Not Authorized")
     user_id = request.form["id"]
@@ -83,6 +85,8 @@ def profile():
 
 @app.route("/deleteOwnUser", methods=["POST"])
 def delete_own():
+    if session["csrf_token"] != request.form["csrf_token"]:
+        abort(403)
     if users.require_admin():
         return render_template("error.html", message="Admins can not delete their account")
     user_id = session["user_id"]
@@ -102,6 +106,8 @@ def load_draft_config():
 
 @app.route("/toggleConfirmConfig", methods=["POST"])
 def toggle_confirm_config():
+    if session["csrf_token"] != request.form["csrf_token"]:
+        abort(403)
     if not users.require_admin():
         return render_template("error.html", message="Not Authorized")
     config_id = request.form["id"]
@@ -117,6 +123,8 @@ def toggle_confirm_config():
 
 @app.route("/updateConfig", methods=["POST"])
 def update_config():
+    if session["csrf_token"] != request.form["csrf_token"]:
+        abort(403)
     if not users.require_admin():
         return render_template("error.html", message="Not Authorized")
     config_id = request.form["id"]
@@ -139,6 +147,8 @@ def update_config():
 
 @app.route("/updateTeams", methods=["POST"])
 def update_teams():
+    if session["csrf_token"] != request.form["csrf_token"]:
+        abort(403)
     if not users.require_admin():
         return render_template("error.html", message="Not Authorized")
     team_ids = request.form.getlist("id")
@@ -154,6 +164,8 @@ def update_teams():
 
 @app.route("/selectTeam", methods=["POST"])
 def select_team():
+    if session["csrf_token"] != request.form["csrf_token"]:
+        abort(403)
     if not users.require_user():
         return render_template("error.html", message="Please log in")
     team_id = request.form["team_id"]
@@ -164,6 +176,8 @@ def select_team():
 
 @app.route("/unselectTeam", methods=["POST"])
 def unselect_team():
+    if session["csrf_token"] != request.form["csrf_token"]:
+        abort(403)
     user_id = session["user_id"]
     teams.unselect_team(user_id)
     return redirect("/")
@@ -180,6 +194,8 @@ def get_players():
 
 @app.route("/addPlayer", methods=["POST"])
 def add_player():
+    if session["csrf_token"] != request.form["csrf_token"]:
+        abort(403)
     if not users.require_admin():
         return render_template("error.html", message="Not Authorized")
     iss = request.form["iss"]
@@ -196,6 +212,8 @@ def add_player():
 
 @app.route("/deletePlayer", methods=["POST"])
 def del_player():
+    if session["csrf_token"] != request.form["csrf_token"]:
+        abort(403)
     if not users.require_admin():
         return render_template("error.html", message="Not Authorized")
     player_id = request.form["id"]
@@ -218,6 +236,8 @@ def draft_list():
 
 @app.route("/addItem", methods=["POST"])
 def add_item_to_list():
+    if session["csrf_token"] != request.form["csrf_token"]:
+        abort(403)
     user_id = session["user_id"]
     player_id = request.form["player_id"]
     list_order = request.form["order"]
@@ -227,6 +247,8 @@ def add_item_to_list():
 
 @app.route("/editItem", methods=["POST"])
 def edit_item_in_list():
+    if session["csrf_token"] != request.form["csrf_token"]:
+        abort(403)
     user_id = session["user_id"]
     player_id = request.form["player_id"]
     item_id = request.form["item_id"]
@@ -236,6 +258,8 @@ def edit_item_in_list():
 
 @app.route("/deleteItem", methods=["POST"])
 def delete_item_in_list():
+    if session["csrf_token"] != request.form["csrf_token"]:
+        abort(403)
     user_id = session["user_id"]
     item_id = request.form["item_id"]
     order = request.form["order"]
@@ -257,6 +281,8 @@ def draft_page():
 
 @app.route("/makeNextPick", methods=["POST"])
 def admin_make_pick():
+    if session["csrf_token"] != request.form["csrf_token"]:
+        abort(403)
     if not users.require_admin():
         return render_template("error.html", message="Not Authorized")
     draft.make_next_pick()
@@ -264,6 +290,8 @@ def admin_make_pick():
 
 @app.route("/revertLastPick", methods=["POST"])
 def revert_pick():
+    if session["csrf_token"] != request.form["csrf_token"]:
+        abort(403)
     if not users.require_admin():
         return render_template("error.html", message="Not Authorized")
     draft.revert_last_pick()

@@ -55,6 +55,7 @@
 <h3>Please select your team</h3>
 
 <form action="/selectTeam" method="POST">
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
     <select class="form-select" name="team_id">
         {% for team in team_list %}
         <option value="{{team[0]}}">{{team[1]}}</option>

@@ -9,6 +9,7 @@
 <form  action="/updateConfig" method="POST" >
     <div class="mb-3">
     <input type="hidden" name="id" value="{{ configuration[0] }}">
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
     <label class="form-label">Name</label>
         <input class="form-control" name="name" type="text" minlength="1" maxlength="40" value="{{ configuration[1] }}" required>
     <label class="form-label" >Participants</label>
@@ -26,6 +27,7 @@
 </br>
 <p>When you are sure the draft settings are correct, please confirm the draft settings from the button below.</p>
 <form action="/toggleConfirmConfig" method="POST" onsubmit="return confirm('Are you sure you want to confirm the draft settings?')">
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
     <input type="hidden" name="id" value="{{ configuration[0] }}">
     <input type="hidden" name="confirmed" value="{{ configuration[5] }}">
     <button class="btn btn-success" type="submit" >CONFIRM DRAFT SETTINGS</button>
@@ -35,6 +37,7 @@
 {% else %}
 
 <form action="/toggleConfirmConfig" method="POST" onsubmit="return confirm('Are you sure you want to return to config? This resets the draft.')">
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
     <input type="hidden" name="id" value="{{ configuration[0] }}">
     <input type="hidden" name="confirmed" value="{{ configuration[5] }}">
     <button class="btn btn-danger" type="submit" >Reset draft</button>
@@ -48,6 +51,7 @@
 {% for team in teams_list %}
     <div>
         <input type="hidden" name="id" value="{{ team[0] }}">
+        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
         <label class="form-label">Name</label>
         <input name="name" minlength="1" maxlength="60" type="text" value="{{ team[1] }}">
         <label class="form-label">Position</label>

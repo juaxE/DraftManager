@@ -7,6 +7,7 @@
 <h3>Add Player</h3>
 <div class="d-flex gap-2 justify-content-left py-2 border">
     <form action="/addPlayer" method="POST">
+        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
         <label>ISS</label>
         <input name="iss" type="number" min ="1" max="32767" {% if players_list %} value="{{players_list[0][1]+1}}" {% endif %}>
         <label>Name</label>
@@ -42,6 +43,7 @@
     {% if session.admin %}
     <td>
         <form method="post" action="/deletePlayer">
+            <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
             <input type="hidden" name="id" value="{{ player[0] }}">
             <button class="btn btn-danger" type="submit">Delete</button>
         </form> 

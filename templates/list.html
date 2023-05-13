@@ -9,6 +9,7 @@
     <form action="/editItem" method="POST">
         <input type="hidden" name="item_id" value="{{ item[0] }}">
         <input type="hidden" name="order" value="{{ item[1] }}">
+        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
         <select class="form-select" name="player_id">
             <option value="{{ item[2] }}" selected {% if item[6] %} disabled {% endif %}>{{ item[3] }}. {{ item[4] }}, {{ item[5] }}</option>
             {% for player in players_list %}
@@ -28,6 +29,7 @@
 <div class="d-flex gap-2 justify-content-left py-2 border">
     <form action="/addItem" method="POST">
         <input type="hidden" name="order" value="{{ current_list|length +1 }}">
+        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
         <select class="form-select" name="player_id">
             {% for player in players_list %}
             {% if not player[4] %}
