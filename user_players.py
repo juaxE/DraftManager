@@ -56,10 +56,12 @@ def decrease_index(list_order, user_id):
 def check_order(user_id):
     sql = text("SELECT id FROM user_players WHERE user_id=:user_id ORDER BY list_order ASC")
     result = db.session.execute(sql, {"user_id":user_id})
-    fix_order(result.fetchall())
-    
+    fix_order(result.fetchall(), user_id)    
 
-def fix_order(list_ids):
+def fix_order(list_ids, user_id):
+    sql = text("UPDATE user_players SET list_order=NULL WHERE user_id=:user_id")
+    db.session.execute(sql, {"user_id":user_id})
+    db.session.commit()
     index = 1
     for list_id in list_ids:
         sql = text("UPDATE user_players SET list_order=:index WHERE id=:list_id")
