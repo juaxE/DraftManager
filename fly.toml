@@ -1,4 +1,4 @@
-# fly.toml app configuration file generated for draftmanager on 2023-05-13T23:34:04+03:00
+# fly.toml app configuration file generated for draftmanager on 2023-05-14T20:38:20+03:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
@@ -17,4 +17,3 @@ primary_region = "arn"
   force_https = true
   auto_stop_machines = true
   auto_start_machines = true
-  min_machines_running = 0
