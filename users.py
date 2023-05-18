@@ -46,6 +46,7 @@ def register_send(username, password):
         return False
     session["username"] = username
     set_id(username)
+    session["csrf_token"] = secrets.token_hex(16)
     return True
 
 def get_team_owner(team_id):
