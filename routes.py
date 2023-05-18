@@ -179,7 +179,10 @@ def unselect_team():
     if session["csrf_token"] != request.form["csrf_token"]:
         abort(403)
     user_id = session["user_id"]
-    teams.unselect_team(user_id)
+    try:
+        teams.unselect_team(user_id)
+    except Exception:
+        render_template("error.html", message="No team selected.")
     return redirect("/")
 
 
