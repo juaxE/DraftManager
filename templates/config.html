@@ -8,31 +8,39 @@
 
 <form  action="/updateConfig" method="POST" >
     <div class="mb-3">
-    <input type="hidden" name="id" value="{{ configuration[0] }}">
-    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-    <label class="form-label">Name</label>
-        <input class="form-control" name="name" type="text" minlength="1" maxlength="40" value="{{ configuration[1] }}" required>
-    <label class="form-label" >Participants</label>
-        <input name="participants" type="number" value="{{ configuration[2] }}" min="1" max="50" required>
-    <label class="form-label" >Rounds</label>
-        <input  name="rounds" type="number" value="{{ configuration[3] }}" min="1" max="40" required>
-    <label class="form-label" >Snake</label>
-        <select class="form-select"name="snake">
-            <option value=1 {% if configuration[4] == 1 %} selected{% endif %}>Yes</option>
-            <option value=0 {% if configuration[4] ==  0 %} selected{% endif %}>No</option>
-        </select>
-    <button class="btn btn-info"type="submit">Update draft settings</button>
+        <input type="hidden" name="id" value="{{ configuration[0] }}">
+        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+        <label class="form-label">Name</label>
+            <input class="form-control" name="name" type="text" minlength="1" maxlength="40" value="{{ configuration[1] }}" required>
+        <label class="form-label" >Participants</label>
+            <input name="participants" type="number" value="{{ configuration[2] }}" min="1" max="50" required>
+        <label class="form-label" >Rounds</label>
+            <input  name="rounds" type="number" value="{{ configuration[3] }}" min="1" max="40" required>
+        <label class="form-label" >Snake</label>
+            <select class="form-select"name="snake">
+                <option value=1 {% if configuration[4] == 1 %} selected{% endif %}>Yes</option>
+                <option value=0 {% if configuration[4] ==  0 %} selected{% endif %}>No</option>
+            </select>
+        <button class="btn btn-info"type="submit">Update draft settings</button>
+    </div>
+</form>
+<hr>
+<div>
+    <p>When you are sure the draft settings are correct and you have added enough players, start the draft here!</p>
+    <h4>Current saved settings</h4>
+    <ul>
+        <li>Name: {{ configuration[1] }}</li>
+        <li>Participants: {{ configuration[2] }}</li>
+        <li>Rounds: {{ configuration[3] }}</li>
+        <li>Snake: {% if configuration[4] == 1 %} Yes {% else %} No {% endif %}</li>
+    </ul>
+    <form action="/toggleConfirmConfig" method="POST" onsubmit="return confirm('Are you sure you want to confirm the draft settings?')">
+        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+        <input type="hidden" name="id" value="{{ configuration[0] }}">
+        <input type="hidden" name="confirmed" value="{{ configuration[5] }}">
+        <button class="btn btn-success" type="submit" >Start Draft</button>
+    </form>
 </div>
-</form>
-</br>
-<p>When you are sure the draft settings are correct, please confirm the draft settings from the button below.</p>
-<form action="/toggleConfirmConfig" method="POST" onsubmit="return confirm('Are you sure you want to confirm the draft settings?')">
-    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-    <input type="hidden" name="id" value="{{ configuration[0] }}">
-    <input type="hidden" name="confirmed" value="{{ configuration[5] }}">
-    <button class="btn btn-success" type="submit" >CONFIRM DRAFT SETTINGS</button>
-</form>
-
 
 {% else %}
 
