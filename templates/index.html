@@ -52,6 +52,7 @@
 </table>
 
 {% else %}
+{% if current_config[5] %}
 <h3>Please select your team</h3>
 
 <form action="/selectTeam" method="POST">
@@ -64,6 +65,22 @@
     <button class="btn btn-primary" type="submit">Submit</button>
 </form>
 
+{% else %}
+{% if not session.admin %}
+<h3>Draft has not yet started</h3>
+<p>The draft has not yet been set up by the admin.</p>
+{% else %}
+<h3>Please set up the draft</h3>
+<div class="d-flex gap-2 py-2">
+    <ol type="1">
+        <li><a href="/players">Add players</a></li>
+        <li>Check and confirm the <a href="/config">draft configuration</a></li>
+        <li>Name the teams</li>
+        <li>Invite your users!</li>
+    </ol>
+</div>
+{% endif %}
+{% endif %}
 {% endif %}
 
 {% endblock %}

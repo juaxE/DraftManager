@@ -10,6 +10,7 @@ import user_players
 @app.route("/")
 def index():
     if users.require_user():
+        current_config = draft_config.load_config()
         team_list = teams.load_free_teams()
         user_team = teams.check_team(session["username"])
         user_team_id = None
@@ -18,7 +19,8 @@ def index():
         user_picks = draft.team_picks_list(user_team_id)
         next_pick = draft.next_pick()
         return render_template("index.html", team_list=team_list,
-                               user_team=user_team, next_pick=next_pick, user_picks=user_picks)
+                               user_team=user_team, next_pick=next_pick, user_picks=user_picks,
+                               current_config=current_config)
     return render_template("index.html")
 
 @app.route("/login", methods=["POST"])
