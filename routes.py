@@ -73,7 +73,10 @@ def deleting_user():
     if not users.require_admin():
         return render_template("error.html", message="Not Authorized")
     user_id = request.form["id"]
-    users.delete_user(user_id)
+    try:
+        users.delete_user(user_id)
+    except Exception:
+        return render_template("error.html", message="Id must be a number")
     return redirect("/users")
 
 
@@ -92,8 +95,11 @@ def delete_own():
     if users.require_admin():
         return render_template("error.html", message="Admins can not delete their account")
     user_id = session["user_id"]
-    users.delete_user(user_id)
-    users.logout()
+    try:
+        users.delete_user(user_id)
+        users.logout()
+    except Exception:
+        return render_template("error.html", message="Id must be a number")
     return redirect("/")
 
 
@@ -120,7 +126,10 @@ def toggle_confirm_config():
         teams_info = teams.load_teams()
         draft.init_picks(current_config, teams_info)
         return redirect("config")
-    teams.delete_teams()
+    try:
+        teams.delete_teams()
+    except Exception:
+        render_template("error.html", message="Settings reset failed")
     return redirect("config")
 
 @app.route("/updateConfig", methods=["POST"])
@@ -222,7 +231,10 @@ def del_player():
     if not users.require_admin():
         return render_template("error.html", message="Not Authorized")
     player_id = request.form["id"]
-    players.delete_player(player_id)
+    try:
+        players.delete_player(player_id)
+    except Exception:
+        return render_template("error.html", message="Can't delete a drafted player")
     return redirect(request.referrer)
 
 
@@ -269,7 +281,10 @@ def delete_item_in_list():
     user_id = session["user_id"]
     item_id = request.form["item_id"]
     order = request.form["order"]
-    user_players.delete_item(item_id, user_id, order)
+    try:
+        user_players.delete_item(item_id, user_id, order)
+    except Exception:
+        return render_template("error.html", message="No such item to delete.")
     return redirect(request.referrer)
 
 
@@ -291,7 +306,10 @@ def admin_make_pick():
         abort(403)
     if not users.require_admin():
         return render_template("error.html", message="Not Authorized")
-    draft.make_next_pick()
+    try:
+        draft.make_next_pick()
+    except Exception:
+        return render_template("error.html", message="No more picks to make")
     return redirect(request.referrer)
 
 @app.route("/revertLastPick", methods=["POST"])
@@ -300,5 +318,8 @@ def revert_pick():
         abort(403)
     if not users.require_admin():
         return render_template("error.html", message="Not Authorized")
-    draft.revert_last_pick()
+    try:
+        draft.revert_last_pick()
+    except Exception:
+        return render_template("error.html", message="No picks have been made")
     return redirect(request.referrer)

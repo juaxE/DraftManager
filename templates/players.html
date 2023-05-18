@@ -51,7 +51,8 @@
         <form method="post" action="/deletePlayer">
             <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
             <input type="hidden" name="id" value="{{ player[0] }}">
-            <button class="btn btn-danger" type="submit">Delete</button>
+            <button class="btn btn-danger" type="submit" {% if player[4] %} disabled title="Can't delete drafted players"
+            {% endif %}>Delete</button>
         </form> 
     </td>
     {% endif %}

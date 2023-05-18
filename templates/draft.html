@@ -29,8 +29,8 @@
         <th class="sticky-header">Player ISS</th>
     </tr>
     {% for pick in picks %}
-    <tr {% if pick[0] == next_pick[0] %} class= "bg-primary" 
-        {% elif pick[0] > next_pick[0] %} class= "bg-info" 
+    <tr {% if next_pick and pick[0] == next_pick[0] %} class= "bg-primary" 
+        {% elif next_pick and pick[0] > next_pick[0] %} class= "bg-info" 
         {% endif %}>
         <td>{{ pick[1] }}</td>
         <td>{{ pick[2] }}</td>

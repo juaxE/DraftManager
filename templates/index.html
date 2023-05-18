@@ -40,8 +40,8 @@
         <th class="sticky-header">Player role</th>
     </tr>
     {% for pick in user_picks %}
-    <tr {% if pick[0] == next_pick[1] %} class= "bg-primary" 
-        {% elif pick[0] > next_pick[1] %} class= "bg-info" 
+    <tr {% if next_pick and pick[0] == next_pick[1] %} class= "bg-primary" 
+        {% elif next_pick and pick[0] > next_pick[1] %} class= "bg-info" 
         {% endif %}>
         <td>{{pick[0]}}</td>
         <td>{{pick[1]}}</td>
