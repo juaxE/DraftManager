@@ -1,9 +1,4 @@
 # DraftManager
-Testable in [Fly.io](https://draftmanager.fly.dev/)
-
-Admin account credentials:
-username: admin
-password: kissakoira123
 
 Two usertypes: Admin, User
 
