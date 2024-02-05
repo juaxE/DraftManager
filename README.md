@@ -1,8 +1,7 @@
 # DraftManager
 
-    Current test version in [Fly.io](https://draftmanager.fly.dev/)
-
-    Admin credentials provided upon request. Normal users can be tested by signing up.
+Current test version in [Fly.io](https://draftmanager.fly.dev/)
+Admin credentials provided upon request. Normal users can be tested by signing up.
 
 Two usertypes: Admin, User
 
